@@ -6,7 +6,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import {
   School, Building2, BookOpen, Clock, Target, Brain,
   CheckCircle, ChevronRight, Rocket, ClipboardList,
-  Star, Zap, BarChart3, Shield,
+  Star, Zap, BarChart3, Shield, Mail, User2,
 } from 'lucide-react';
 import Link from 'next/link';
 import { SiteNav } from '@/components/SiteNav';
@@ -35,7 +35,6 @@ const SCHOOL_TYPES = [
     desc: 'Tailored to selective grammar school 11+ entrance exams, covering Maths, English, Verbal and Non-Verbal Reasoning in GL and CEM formats.',
     badges: ['GL Assessment', 'CEM Style', 'CSSE'],
     gradient: 'from-indigo-500 to-violet-600',
-    // light-theme selected state
     selBg: 'bg-indigo-50',
     selBorder: 'border-indigo-400',
     badgeBg: 'bg-indigo-100 text-indigo-700 border border-indigo-200',
@@ -133,6 +132,10 @@ function MockExamsPageInner() {
   const [step, setStep]           = useState<Step>('school-type');
   const [config, setConfig]       = useState<TestConfig>({ schoolType: null, duration: 45, questionCount: 25, subjects: [], difficulty: 'standard' });
 
+  // Lead capture fields on confirm step
+  const [leadName, setLeadName]   = useState('');
+  const [leadEmail, setLeadEmail] = useState('');
+
   const selectedType   = SCHOOL_TYPES.find(s => s.id === config.schoolType);
   const availableSubjs = config.schoolType ? SUBJECTS_BY_TYPE[config.schoolType] : [];
   const currentIdx     = STEP_ORDER.indexOf(step);
@@ -160,7 +163,20 @@ function MockExamsPageInner() {
   };
 
   const handleStartTest = () => {
-    // Route to /quiz — runs inside the branded SiteNav layout.
+    // Fire-and-forget lead capture if email provided
+    if (leadEmail && leadEmail.includes('@')) {
+      fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: leadEmail,
+          childName: leadName,
+          source: 'mock-exam-general',
+          targetSchool: config.schoolType || '',
+        }),
+      }).catch(() => undefined);
+    }
+
     const params = new URLSearchParams();
     params.set('quizType', 'multiple-choice');
     params.set('mode', 'exam');
@@ -174,8 +190,8 @@ function MockExamsPageInner() {
 
     router.push(`/quiz?${params.toString()}`);
   };
-  
-  const [slideDir, setSlideDir] = useState(1); // 1 = forward, -1 = back
+
+  const [slideDir, setSlideDir] = useState(1);
 
   const goNext = () => { setSlideDir(1); handleNext(); };
   const goBack = (target: Step) => { setSlideDir(-1); setStep(target); };
@@ -192,14 +208,12 @@ function MockExamsPageInner() {
 
       <main className="bg-white">
 
-        {/* ── Hero + Form (all above the fold) ────────────────────────────── */}
+        {/* ── Hero + Form ────────────────────────────────────────────────── */}
         <section className="relative overflow-hidden bg-gradient-to-br from-indigo-50 via-white to-violet-50 pt-6 pb-10 px-4">
-          {/* Decorative blobs */}
           <div className="pointer-events-none absolute -top-24 -right-24 w-[500px] h-[500px] bg-violet-200 opacity-20 rounded-full blur-3xl" />
           <div className="pointer-events-none absolute bottom-0 right-1/4 w-80 h-80 bg-indigo-200 opacity-15 rounded-full blur-3xl" />
 
           <div className="relative max-w-5xl mx-auto">
-            {/* Compact header */}
             <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-5">
               <div className="inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-100 text-indigo-700 rounded-full text-xs font-black uppercase tracking-widest mb-3">
                 <ClipboardList size={12} /> Interactive Mock Exams
@@ -270,7 +284,7 @@ function MockExamsPageInner() {
               </div>
             )}
 
-            {/* Form card — inline in the hero, no scroll needed */}
+            {/* Form card */}
             <div className="bg-white rounded-3xl border border-slate-200 shadow-sm p-5 sm:p-8 overflow-hidden">
               {isSchoolMode ? (
                 <SchoolMockStart compact />
@@ -380,7 +394,7 @@ function MockExamsPageInner() {
                   })}
                 </div>
 
-                {/* Duration, Questions, Difficulty — inline, compact pill-style */}
+                {/* Duration, Questions, Difficulty */}
                 <div className="grid grid-cols-3 gap-4 mb-5">
                   <div>
                     <p className="text-xs font-black text-slate-500 uppercase tracking-widest mb-2 flex items-center gap-1"><Clock size={11} /> Duration</p>
@@ -488,6 +502,36 @@ function MockExamsPageInner() {
                   </div>
                 </div>
 
+                {/* ── Lead capture ── */}
+                <div className="rounded-2xl border border-indigo-100 bg-indigo-50 p-4 mb-5">
+                  <p className="text-xs font-black text-indigo-700 uppercase tracking-widest mb-3">
+                    Get your results & free resources via email
+                  </p>
+                  <div className="flex flex-col gap-2">
+                    <div className="relative">
+                      <User2 size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                      <input
+                        type="text"
+                        placeholder="Child's first name (optional)"
+                        value={leadName}
+                        onChange={(e) => setLeadName(e.target.value)}
+                        className="w-full pl-9 pr-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-white"
+                      />
+                    </div>
+                    <div className="relative">
+                      <Mail size={15} className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400" />
+                      <input
+                        type="email"
+                        placeholder="Parent email (optional)"
+                        value={leadEmail}
+                        onChange={(e) => setLeadEmail(e.target.value)}
+                        className="w-full pl-9 pr-4 py-2.5 border border-slate-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-indigo-300 bg-white"
+                      />
+                    </div>
+                  </div>
+                  <p className="text-[10px] text-slate-400 mt-2">No spam. Skip if you prefer — you can still start the exam.</p>
+                </div>
+
                 <div className="flex items-center justify-between">
                   <button onClick={() => goBack('test-config')}
                     className="px-5 py-2.5 rounded-xl font-bold text-slate-500 hover:text-slate-700 transition-colors border border-slate-200 bg-white text-sm">
@@ -505,7 +549,7 @@ function MockExamsPageInner() {
           )}
         </div>{/* end form card */}
 
-        {/* Stats bar — below the fold is fine, it's supporting info */}
+        {/* Stats bar */}
         <motion.div
           initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
           className="grid grid-cols-2 sm:grid-cols-4 gap-4 mt-8"
