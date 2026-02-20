@@ -1,12 +1,14 @@
 'use client';
 
 import React, { useMemo, useState } from 'react';
-import { MapPin, School, CheckCircle, Mail, Phone, User, BookOpen, Shield, Users } from 'lucide-react';
+import { MapPin, School, CheckCircle, Mail, Phone, User, BookOpen, Shield, Users, Loader2 } from 'lucide-react';
 
 type City = { slug: string; label: string };
 
 export default function TutorCityPageClient({ city }: { city: City }) {
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
   const [form, setForm] = useState({
     name: '',
     email: '',
@@ -16,6 +18,36 @@ export default function TutorCityPageClient({ city }: { city: City }) {
   });
 
   const title = useMemo(() => `11 Plus Tutor in ${city.label}`, [city.label]);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!form.email || !form.name) return;
+
+    setLoading(true);
+    setError('');
+
+    try {
+      const res = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email: form.email,
+          childName: form.name,
+          phone: form.phone,
+          childYear: form.childYear,
+          targetSchool: city.label,
+          source: `tutor-enquiry-${city.slug}`,
+        }),
+      });
+      if (!res.ok) throw new Error('Submission failed');
+      setSubmitted(true);
+    } catch (err) {
+      console.error('[TutorCityPageClient]', err);
+      setError('Something went wrong. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <main className="max-w-6xl mx-auto px-4 sm:px-6 py-14">
@@ -95,14 +127,7 @@ export default function TutorCityPageClient({ city }: { city: City }) {
             </div>
 
             {!submitted ? (
-              <form
-                onSubmit={(e) => {
-                  e.preventDefault();
-                  if (!form.email || !form.name) return;
-                  setSubmitted(true);
-                }}
-                className="space-y-3"
-              >
+              <form onSubmit={handleSubmit} className="space-y-3">
                 <label className="block">
                   <div className="text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">Your name</div>
                   <div className="relative">
@@ -112,6 +137,7 @@ export default function TutorCityPageClient({ city }: { city: City }) {
                       onChange={(e) => setForm({ ...form, name: e.target.value })}
                       className="w-full pl-10 pr-3 py-3 rounded-xl border border-slate-200 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200 outline-none"
                       placeholder="Parent / guardian"
+                      required
                     />
                   </div>
                 </label>
@@ -126,6 +152,7 @@ export default function TutorCityPageClient({ city }: { city: City }) {
                       onChange={(e) => setForm({ ...form, email: e.target.value })}
                       className="w-full pl-10 pr-3 py-3 rounded-xl border border-slate-200 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200 outline-none"
                       placeholder="you@example.com"
+                      required
                     />
                   </div>
                 </label>
@@ -144,7 +171,7 @@ export default function TutorCityPageClient({ city }: { city: City }) {
                 </label>
 
                 <label className="block">
-                  <div className="text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">Child’s year (optional)</div>
+                  <div className="text-xs font-bold text-slate-700 mb-1.5 uppercase tracking-wide">Child's year (optional)</div>
                   <input
                     value={form.childYear}
                     onChange={(e) => setForm({ ...form, childYear: e.target.value })}
@@ -159,26 +186,33 @@ export default function TutorCityPageClient({ city }: { city: City }) {
                     value={form.notes}
                     onChange={(e) => setForm({ ...form, notes: e.target.value })}
                     className="w-full px-3 py-3 rounded-xl border border-slate-200 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-200 outline-none min-h-[96px]"
-                    placeholder="Schools you’re targeting, topics to focus on, time until exam…"
+                    placeholder="Schools you're targeting, topics to focus on, time until exam…"
                   />
                 </label>
 
+                {error && <p className="text-xs text-red-500 font-medium">{error}</p>}
+
                 <button
                   type="submit"
-                  className="w-full py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black shadow-lg shadow-indigo-200 transition-colors"
+                  disabled={loading}
+                  className="w-full py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-black shadow-lg shadow-indigo-200 transition-colors disabled:opacity-60 flex items-center justify-center gap-2"
                 >
-                  Send enquiry
+                  {loading ? (
+                    <><Loader2 size={16} className="animate-spin" /> Sending…</>
+                  ) : (
+                    'Send enquiry'
+                  )}
                 </button>
 
                 <div className="text-xs text-slate-500 leading-relaxed">
-                  This form is for enquiries only. We don’t lock resources behind sign-up.
+                  This form is for enquiries only. We don't lock resources behind sign-up.
                 </div>
               </form>
             ) : (
               <div className="p-4 rounded-2xl bg-emerald-50 border border-emerald-100 text-emerald-900">
-                <div className="font-black mb-1">Thanks — we’ve received your enquiry.</div>
+                <div className="font-black mb-1">Thanks — we've received your enquiry.</div>
                 <div className="text-sm text-emerald-800">
-                  We’ll be in touch using the details you provided.
+                  We'll be in touch using the details you provided.
                 </div>
               </div>
             )}
