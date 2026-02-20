@@ -14,14 +14,6 @@ interface Props {
 
 type State = 'idle' | 'loading' | 'success' | 'error';
 
-// ─── CONFIG ──────────────────────────────────────────────────────────────────
-// Paste your deployed Apps Script Web App URL here.
-// After deploying in Apps Script, go to Deploy → Manage deployments → copy the URL.
-// It looks like: https://script.google.com/macros/s/AKfycb.../exec
-const APPS_SCRIPT_URL = process.env.NEXT_PUBLIC_APPS_SCRIPT_URL || 'https://script.google.com/macros/s/AKfycbwO8YZyJF4yngUnNT0ZZlnt2ZQdLevpQ4mTdgBvQPBjv4LXVHhpZjLkXGJaHo7_KzbN/exec';
-
-// ─────────────────────────────────────────────────────────────────────────────
-
 export function ParentEmailCapture({ context, onDismiss, variant = 'inline' }: Props) {
   const [email, setEmail]               = useState('');
   const [childName, setChildName]       = useState('');
@@ -29,37 +21,36 @@ export function ParentEmailCapture({ context, onDismiss, variant = 'inline' }: P
   const [state, setState]               = useState<State>('idle');
   const [error, setError]               = useState('');
 
-  onst handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
-  if (!email || !email.includes('@')) {
-    setError('Please enter a valid email address.');
-    return;
-  }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!email || !email.includes('@')) {
+      setError('Please enter a valid email address.');
+      return;
+    }
 
-  setState('loading');
-  setError('');
+    setState('loading');
+    setError('');
 
-  try {
-    const res = await fetch('/api/leads', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        email,
-        childName,
-        targetSchool,
-        source: 'parent-email-capture',
-      }),
-    });
-    if (!res.ok) throw new Error('Submission failed');
-    setState('success');
-  } catch (err) {
-    console.error('[ParentEmailCapture]', err);
-    setError('Something went wrong. Please try again.');
-    setState('error');
-  }
-};
+    try {
+      const res = await fetch('/api/leads', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          email,
+          childName,
+          targetSchool,
+          source: 'parent-email-capture',
+        }),
+      });
+      if (!res.ok) throw new Error('Submission failed');
+      setState('success');
+    } catch (err) {
+      console.error('[ParentEmailCapture]', err);
+      setError('Something went wrong. Please try again.');
+      setState('error');
+    }
+  };
 
-  
   if (state === 'success') {
     return (
       <div className={`flex flex-col items-center justify-center gap-3 py-6 text-center ${variant === 'modal' ? 'px-6' : ''}`}>
