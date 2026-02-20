@@ -29,51 +29,37 @@ export function ParentEmailCapture({ context, onDismiss, variant = 'inline' }: P
   const [state, setState]               = useState<State>('idle');
   const [error, setError]               = useState('');
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!email || !email.includes('@')) {
-      setError('Please enter a valid email address.');
-      return;
-    }
+  onst handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+  if (!email || !email.includes('@')) {
+    setError('Please enter a valid email address.');
+    return;
+  }
 
-    setState('loading');
-    setError('');
+  setState('loading');
+  setError('');
 
-    try {
-      // Google Apps Script requires a no-cors fetch — it redirects,
-      // so we use mode: 'no-cors' and treat any response as success.
-      if (APPS_SCRIPT_URL) {
-        await fetch(APPS_SCRIPT_URL, {
-          method: 'POST',
-          // Apps Script Web Apps require no-cors when called from the browser
-          mode: 'no-cors',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            email,
-            childName,
-            targetSchool,
-            source: 'parent-email-capture',
-          }),
-        });
-        // no-cors responses are opaque — we assume success
-      } else {
-        // Fallback: your own /api/leads endpoint
-        const res = await fetch('/api/leads', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, childName, targetSchool, source: 'parent-email-capture' }),
-        });
-        if (!res.ok) throw new Error('Submission failed');
-      }
+  try {
+    const res = await fetch('/api/leads', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        childName,
+        targetSchool,
+        source: 'parent-email-capture',
+      }),
+    });
+    if (!res.ok) throw new Error('Submission failed');
+    setState('success');
+  } catch (err) {
+    console.error('[ParentEmailCapture]', err);
+    setError('Something went wrong. Please try again.');
+    setState('error');
+  }
+};
 
-      setState('success');
-    } catch (err) {
-      console.error('[ParentEmailCapture]', err);
-      setError('Something went wrong. Please try again.');
-      setState('error');
-    }
-  };
-
+  
   if (state === 'success') {
     return (
       <div className={`flex flex-col items-center justify-center gap-3 py-6 text-center ${variant === 'modal' ? 'px-6' : ''}`}>
