@@ -296,7 +296,6 @@ export const questionBank: Record<Subject, Partial<Record<QuizType, Question[]>>
   { id: 'math-mc-249', text: 'Simplify: 12a²b ÷ 4ab', options: ['3a', '3ab', '3a²', '8ab'], correctAnswer: '3a', explanation: '12a²b ÷ 4ab = (12/4) × (a²/a) × (b/b) = 3a.', topic: 'Algebra' },
   { id: 'math-mc-250', text: 'A sequence has first term 100 and common difference −7. What is the first negative term?', options: ['15th term', '16th term', '17th term', '18th term'], correctAnswer: '16th term', explanation: 'nth term = 100 − 7(n−1) = 107 − 7n. Set < 0: 107 < 7n. n > 15.28. First negative = 16th term.', topic: 'Number Sequences' },
 ],
-    'written': []
   },
   [Subject.English]: {
     'multiple-choice': [
@@ -577,7 +576,6 @@ export const questionBank: Record<Subject, Partial<Record<QuizType, Question[]>>
   { id: 'eng-mc-249', text: 'What is the effect of the second person ("you") in writing?', options: ['Creates distance from the reader', 'Draws the reader directly into the text', 'Describes events in the past', 'Creates an objective tone'], correctAnswer: 'Draws the reader directly into the text', explanation: 'Second-person narration ("you do this...") implicates the reader directly, creating immediacy and engagement.', topic: 'Comprehension' },
   { id: 'eng-mc-250', text: 'What does "loquacious" mean?', options: ['Very quiet', 'Tending to talk a great deal', 'Extremely thoughtful', 'Highly organised'], correctAnswer: 'Tending to talk a great deal', explanation: '"Loquacious" means excessively talkative. Synonyms: garrulous, verbose, talkative.', topic: 'Vocabulary' },
 ],
-    'written': []
   },
   [Subject.VerbalReasoning]: {
     'multiple-choice': [
@@ -831,9 +829,7 @@ export const questionBank: Record<Subject, Partial<Record<QuizType, Question[]>>
   { id: 'vr-mc-248', text: '"Prolific is to producing much as concise is to ___"', options: ['Long', 'Wordy', 'Brief', 'Detailed'], correctAnswer: 'Brief', explanation: '"Prolific" means producing much. "Concise" means using few words — brief.', topic: 'Synonyms' },
   { id: 'vr-mc-249', text: 'Next term: 0, 1, 3, 7, 15, 31, ___', options: ['47', '55', '63', '65'], correctAnswer: '63', explanation: 'Pattern: ×2+1. 31×2+1=63.', topic: 'Number Sequences' },
   { id: 'vr-mc-250', text: '"Taciturn is to talkative as lethargic is to ___"', options: ['Tired', 'Slow', 'Energetic', 'Bored'], correctAnswer: 'Energetic', explanation: '"Taciturn/talkative" are opposites. "Lethargic/energetic" are opposites.', topic: 'Analogies' },
-],
-    'written': []
-  },
+  ],
   [Subject.NonVerbalReasoning]: {
     'multiple-choice': [
   { id: 'nvr-mc-001', text: 'A pattern shows: Circle, Square, Triangle, Circle, Square, ___. What comes next?', options: ['Circle', 'Square', 'Triangle', 'Diamond'], correctAnswer: 'Triangle', explanation: 'The pattern repeats every 3 shapes. Next is Triangle.', topic: 'Pattern Recognition' },
@@ -1087,10 +1083,35 @@ export const questionBank: Record<Subject, Partial<Record<QuizType, Question[]>>
   { id: 'nvr-mc-248', text: 'Pattern: each term in a sequence of figures shows the previous figure reflected. Starting with a "d", after 4 steps:', options: ['d', 'b', 'p', 'q'], correctAnswer: 'd', explanation: 'Each reflection flips: d→b→d→b→d. After 4 steps = d.', topic: 'Pattern Recognition' },
   { id: 'nvr-mc-249', text: 'An icosahedron has how many edges?', options: ['20', '24', '30', '36'], correctAnswer: '30', explanation: 'A regular icosahedron has 30 edges. (F+V-E=2: 20+12-30=2 ✓)', topic: '3D Shapes' },
   { id: 'nvr-mc-250', text: 'In a spiral pattern, each layer adds how many new squares to an n×n grid to make (n+2)×(n+2)?', options: ['2n+1', '2n+2', '2n+3', '4n+4'], correctAnswer: '4n+4', explanation: '(n+2)² - n² = n²+4n+4-n² = 4n+4 new squares in the outer layer.', topic: 'Pattern Recognition' },
-],
-    'written': []
+  ]
   }
 };
+// Helper functions
+function normalizeSubject(input: any): Subject {
+  const raw = String(input ?? '').trim();
+  const asEnum = (Object.values(Subject) as string[]).find((v) => v === raw);
+  if (asEnum) return asEnum as Subject;
+  const s = raw.toLowerCase();
+  if (s.includes('english') || s === 'eng') return Subject.English;
+  if (s.includes('non') && s.includes('verbal')) return Subject.NonVerbalReasoning;
+  if (s.includes('verbal')) return Subject.VerbalReasoning;
+  if (s.includes('math')) return Subject.Maths;
+  return Subject.Maths;
+}
+
+function normalizeQuizType(input: any): QuizType {
+  const raw = String(input ?? '').trim();
+  const lower = raw.toLowerCase();
+  const allowed = new Set<QuizType>(['multiple-choice','true-false','fill-in-the-blank','ordering','short-answer']);
+  if (allowed.has(raw as QuizType)) return raw as QuizType;
+  if (allowed.has(lower as QuizType)) return lower as QuizType;
+  if (lower === 'mcq' || lower === 'multiple choice') return 'multiple-choice';
+  if (lower === 'short answer' || lower === 'free-text') return 'short-answer';
+  if (lower === 'tf' || lower === 'true false') return 'true-false';
+  return 'multiple-choice';
+}
+
+
 export function getRandomQuestions(
   subject: Subject | string,
   quizType: QuizType | string,
