@@ -135,7 +135,7 @@ export default function Home() {
 
   // Save stats whenever they change
   useEffect(() => {
-    if (typeof window !== 'undefined' && stats.targetSchool !== null) {
+    if (typeof window !== 'undefined') {
       localStorage.setItem('11plus-stats', JSON.stringify(stats));
     }
   }, [stats]);
@@ -211,11 +211,7 @@ const handleQuizComplete = (result: QuizResult) => {
 
 // Show landing page first
   if (showLanding) {
-    return <LandingPage onStart={() => {
-      setShowLanding(false);
-      // Skip onboarding for returning users who already chose a school type
-      setScreen(stats.targetSchool ? 'dashboard' : 'onboarding');
-    }} />;
+    return <LandingPage />;
   }
 
   return (
