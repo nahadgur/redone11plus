@@ -34,9 +34,20 @@ export default function SchoolsIndexPage() {
               <GraduationCap size={12} /> School Profiles
             </div>
             <h1 className="text-4xl sm:text-5xl font-black text-slate-900 tracking-tight mb-4">11+ School Profiles</h1>
-            <p className="text-lg text-slate-500 max-w-2xl leading-relaxed">
+            <p className="text-lg text-slate-500 max-w-2xl leading-relaxed mb-8">
               Exam format, subjects tested, entry process and mock exam availability for {SCHOOLS.length} grammar and independent schools across the UK.
             </p>
+            <Link
+              href="/compare"
+              className="inline-flex items-center gap-2.5 px-5 py-3 bg-white border-2 border-indigo-200 hover:border-indigo-400 hover:bg-indigo-50 text-indigo-700 font-black text-sm rounded-2xl transition-all shadow-sm"
+            >
+              <span className="flex items-center gap-1.5">
+                <GraduationCap size={15} />
+                <Building2 size={15} />
+              </span>
+              Compare schools side-by-side
+              <ChevronRight size={14} />
+            </Link>
           </div>
         </section>
 
