@@ -1116,7 +1116,8 @@ export function getRandomQuestions(
   subject: Subject | string,
   quizType: QuizType | string,
   count: number = 5,
-  topic?: string
+  topic?: string,
+  difficulty: 'standard' | 'challenging' | 'exam-ready' = 'standard'
 ): Question[] {
   const normalizedSubject = normalizeSubject(subject);
   const normalizedQuizType = normalizeQuizType(quizType);
@@ -1130,6 +1131,29 @@ export function getRandomQuestions(
   // If not enough questions after filtering, fall back to the full set
   if (filteredQuestions.length < 1) {
     filteredQuestions = questions;
+  }
+
+  // Apply difficulty by splitting the question pool into thirds.
+  // The bank is roughly ordered from easier → harder within each topic group,
+  // so slicing the pool gives a meaningful difficulty gradient.
+  if (filteredQuestions.length >= 6) {
+    const third = Math.floor(filteredQuestions.length / 3);
+    if (difficulty === 'standard') {
+      // First third only (easiest)
+      filteredQuestions = filteredQuestions.slice(0, third);
+    } else if (difficulty === 'challenging') {
+      // Middle third
+      filteredQuestions = filteredQuestions.slice(third, third * 2);
+    } else {
+      // 'exam-ready' — last third (hardest)
+      filteredQuestions = filteredQuestions.slice(third * 2);
+    }
+    // Safety: if the filtered slice is too small, fall back to full pool
+    if (filteredQuestions.length < Math.min(count, 5)) {
+      filteredQuestions = topic
+        ? questions.filter((q) => q.topic.toLowerCase().includes(topic.toLowerCase()))
+        : questions;
+    }
   }
 
   // Shuffle once
