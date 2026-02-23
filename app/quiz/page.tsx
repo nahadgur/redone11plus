@@ -14,6 +14,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft, Loader2 } from 'lucide-react';
 import { SiteNav } from '@/components/SiteNav';
+import { SiteFooter } from '@/components/SiteFooter';
 import { QuizArea } from '@/components/QuizArea';
 import { ResultsScreen } from '@/components/ResultsScreen';
 import { ReviewScreen } from '@/components/ReviewScreen';
@@ -43,6 +44,7 @@ function QuizPageInner() {
   const params     = useSearchParams();
   const [screen, setScreen]       = useState<Screen>('quiz');
   const [lastResult, setLastResult] = useState<QuizResult | null>(null);
+  const [retryKey, setRetryKey]   = useState(0);
 
   // Parse query params
   const subject      = mapSubject(params.get('subject'));
@@ -53,6 +55,7 @@ function QuizPageInner() {
   const examDurationMins = Math.max(15, Math.min(120, parseInt(params.get('duration') || '45', 10)));
   const schoolId     = params.get('schoolId') || undefined;
   const topic        = params.get('topic')    || undefined;
+  const difficulty   = (params.get('difficulty') || 'standard') as 'standard' | 'challenging' | 'exam-ready';
 
   const handleComplete = (result: QuizResult) => {
     setLastResult(result);
@@ -60,8 +63,9 @@ function QuizPageInner() {
   };
 
   const handleRetry = () => {
-    setScreen('quiz');
+    setRetryKey((k) => k + 1);
     setLastResult(null);
+    setScreen('quiz');
   };
 
   return (
@@ -84,6 +88,7 @@ function QuizPageInner() {
       <main className="flex-1 max-w-5xl mx-auto w-full px-4 py-6">
         {screen === 'quiz' && (
           <QuizArea
+            key={retryKey}
             subject={subject}
             schoolType={schoolType}
             mode={mode}
@@ -92,6 +97,7 @@ function QuizPageInner() {
             questionCount={questionCount}
             examDurationMins={examDurationMins}
             schoolId={schoolId}
+            difficulty={difficulty}
             onComplete={handleComplete}
             onBackToDashboard={() => router.push('/mock-exams')}
           />
@@ -114,6 +120,7 @@ function QuizPageInner() {
           />
         )}
       </main>
+      <SiteFooter />
     </div>
   );
 }
