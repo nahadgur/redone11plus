@@ -25,6 +25,7 @@ interface QuizAreaProps {
   questionCount?: number;
   examDurationMins?: number;
   schoolId?: string;
+  difficulty?: 'standard' | 'challenging' | 'exam-ready';
   onComplete: (result: QuizResult) => void;
   onBackToDashboard: () => void;
 }
@@ -38,6 +39,7 @@ export const QuizArea: React.FC<QuizAreaProps> = ({
   questionCount,
   examDurationMins,
   schoolId,
+  difficulty = 'standard',
   onComplete,
   onBackToDashboard,
 }) => {
@@ -63,7 +65,7 @@ export const QuizArea: React.FC<QuizAreaProps> = ({
     const load = async () => {
       const loadTopic = mode === 'practice' ? topic : undefined;
       const desiredCount = questionCount ?? (mode === 'exam' ? 25 : 10);
-      const qs = await generateQuestions(subject, schoolType, loadTopic, quizType, desiredCount, schoolId);
+      const qs = await generateQuestions(subject, schoolType, loadTopic, quizType, desiredCount, schoolId, difficulty);
       if (mounted) {
         setState((s) => ({ ...s, questions: qs, loading: false }));
         // Initialize state for the first question if applicable
@@ -77,7 +79,7 @@ export const QuizArea: React.FC<QuizAreaProps> = ({
     return () => {
       mounted = false;
     };
-  }, [subject, schoolType, mode, topic, quizType, questionCount, schoolId]);
+  }, [subject, schoolType, mode, topic, quizType, questionCount, schoolId, difficulty]);
 
   useEffect(() => {
     if (state.loading || state.completed) return;
