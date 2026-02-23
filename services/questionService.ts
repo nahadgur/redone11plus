@@ -38,5 +38,5 @@ export const generateQuestions = async (
   }
 
   // Local fallback: can repeat questions to reach target count.
-  return getRandomQuestions(subject, quizType, count, topic);
+  return getRandomQuestions(subject, quizType, count, topic, difficulty);
 };
