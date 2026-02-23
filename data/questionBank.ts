@@ -830,6 +830,7 @@ export const questionBank: Record<Subject, Partial<Record<QuizType, Question[]>>
   { id: 'vr-mc-249', text: 'Next term: 0, 1, 3, 7, 15, 31, ___', options: ['47', '55', '63', '65'], correctAnswer: '63', explanation: 'Pattern: ×2+1. 31×2+1=63.', topic: 'Number Sequences' },
   { id: 'vr-mc-250', text: '"Taciturn is to talkative as lethargic is to ___"', options: ['Tired', 'Slow', 'Energetic', 'Bored'], correctAnswer: 'Energetic', explanation: '"Taciturn/talkative" are opposites. "Lethargic/energetic" are opposites.', topic: 'Analogies' },
   ],
+  },
   [Subject.NonVerbalReasoning]: {
     'multiple-choice': [
   { id: 'nvr-mc-001', text: 'A pattern shows: Circle, Square, Triangle, Circle, Square, ___. What comes next?', options: ['Circle', 'Square', 'Triangle', 'Diamond'], correctAnswer: 'Triangle', explanation: 'The pattern repeats every 3 shapes. Next is Triangle.', topic: 'Pattern Recognition' },
