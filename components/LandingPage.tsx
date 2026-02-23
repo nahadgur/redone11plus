@@ -4,15 +4,13 @@ import { motion } from 'framer-motion';
 import {
   Brain, Trophy, Sparkles, Target, Zap, Check, Star,
   ArrowRight, ShieldCheck, Mail, HelpCircle, GraduationCap, CheckCircle,
-  Gamepad2,
 } from 'lucide-react';
 import { SiteNav } from './SiteNav';
+import { SiteFooter } from './SiteFooter';
 
-interface LandingPageProps {
-  onStart: () => void;
-}
+interface LandingPageProps {}
 
-export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
+export const LandingPage: React.FC<LandingPageProps> = () => {
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -26,7 +24,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
 
   return (
     <div className="min-h-screen flex flex-col bg-white overflow-x-hidden font-inter">
-      <SiteNav ctaLabel="Explore resources" ctaHref="/mock-exams" />
+      <SiteNav ctaLabel="Find a tutor" ctaHref="/tutors" />
 
       {/* Hero */}
       <div className="relative pt-8 pb-16 sm:pt-16 sm:pb-24 px-4 sm:px-6 max-w-7xl mx-auto w-full">
@@ -65,12 +63,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
 
               {/* Secondary CTAs */}
               <div className="mt-4 flex flex-wrap justify-center lg:justify-start gap-3">
-                <button
-                  onClick={onStart}
-                  className="inline-flex items-center justify-center gap-2 px-5 py-3 rounded-full border border-slate-200 bg-white text-slate-900 font-bold hover:bg-slate-50 transition-colors"
-                >
-                  <Gamepad2 size={16} /> Start practising
-                </button>
                 <Link href="/schools" className="inline-flex items-center justify-center px-5 py-3 rounded-full border border-indigo-200 bg-indigo-50 text-indigo-700 font-bold hover:bg-indigo-100 transition-colors">
                   School-specific mock exams
                 </Link>
@@ -343,12 +335,6 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
                 <ArrowRight size={20} strokeWidth={3} />
               </span>
             </Link>
-            <button
-              onClick={onStart}
-              className="inline-flex items-center gap-3 px-8 py-4 sm:px-10 sm:py-6 border-2 border-white/20 text-white rounded-2xl font-bold text-lg hover:border-white/40 hover:bg-white/5 transition-all duration-300"
-            >
-              <Gamepad2 size={20} /> Start practising
-            </button>
           </div>
           <div className="mt-10 flex flex-wrap justify-center gap-6 text-sm font-bold text-slate-400">
             <span className="flex items-center gap-2"><CheckCircle size={16} className="text-emerald-400" /> Free access</span>
@@ -358,45 +344,7 @@ export const LandingPage: React.FC<LandingPageProps> = ({ onStart }) => {
         </div>
       </div>
 
-      {/* Footer */}
-      <footer className="bg-slate-900 text-slate-400 py-12 border-t border-slate-800">
-        <div className="max-w-6xl mx-auto px-6 grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div>
-            <div className="flex items-center gap-2 mb-4 text-white">
-              <div className="w-8 h-8 bg-indigo-600 rounded-lg flex items-center justify-center font-bold">11+</div>
-              <span className="font-extrabold text-xl">11 Plus Exam Papers</span>
-            </div>
-            <p className="text-sm">Helping children feel confident for the 11+.</p>
-          </div>
-          <div>
-            <h4 className="font-bold text-white mb-4">Product</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/mock-exams" className="hover:text-white transition-colors">Mock Exams</Link></li>
-              <li><Link href="/papers" className="hover:text-white transition-colors">Past Papers</Link></li>
-              <li><Link href="/schools" className="hover:text-white transition-colors">Schools</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-bold text-white mb-4">Resources</h4>
-            <ul className="space-y-2 text-sm">
-              <li><Link href="/blog" className="hover:text-white transition-colors">Blog</Link></li>
-              <li><Link href="/exam-dates" className="hover:text-white transition-colors">Exam Dates</Link></li>
-              <li><Link href="/guides/gl-vs-cem" className="hover:text-white transition-colors">GL vs CEM Guide</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h4 className="font-bold text-white mb-4">Legal</h4>
-            <ul className="space-y-2 text-sm">
-              <li>Privacy</li>
-              <li>Terms of use</li>
-              <li>Contact</li>
-            </ul>
-          </div>
-        </div>
-        <div className="max-w-6xl mx-auto px-6 mt-12 pt-8 border-t border-slate-800 text-center text-xs">
-          <p>&copy; 2025 11 Plus Exam Papers. All rights reserved.</p>
-        </div>
-      </footer>
+      <SiteFooter />
     </div>
   );
 };
