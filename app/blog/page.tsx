@@ -49,13 +49,13 @@ export default function BlogIndexPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mt-10">
           {POSTS.map((p) => (
-            <div key={p.slug} className="p-6 rounded-2xl bg-slate-50 border border-slate-100">
-              <div className="font-black text-slate-900 mb-2">{p.title}</div>
+            <Link key={p.slug} href={`/blog/${p.slug}`} className="group p-6 rounded-2xl bg-slate-50 border border-slate-100 hover:border-indigo-200 hover:bg-indigo-50 transition-all">
+              <div className="font-black text-slate-900 mb-2 group-hover:text-indigo-700 transition-colors">{p.title}</div>
               <div className="text-sm text-slate-600 leading-relaxed mb-4">{p.desc}</div>
-              <div className="text-xs text-slate-500">
-                Coming soon
+              <div className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600">
+                Read article <ArrowRight size={12} />
               </div>
-            </div>
+            </Link>
           ))}
         </div>
 
@@ -72,10 +72,10 @@ export default function BlogIndexPage() {
               Mock exams <ArrowRight size={18} />
             </Link>
             <Link
-              href="/mock-exams"
+              href="/papers"
               className="inline-flex items-center gap-2 px-5 py-3 rounded-2xl bg-white border border-slate-200 hover:border-indigo-200 hover:bg-indigo-50 text-slate-900 font-black"
             >
-              Exam papers <ArrowRight size={18} />
+              School papers <ArrowRight size={18} />
             </Link>
           </div>
         </div>
