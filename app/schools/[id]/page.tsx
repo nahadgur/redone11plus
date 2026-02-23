@@ -297,18 +297,18 @@ export default function SchoolProfilePage({ params }: { params: { id: string } }
           {/* Actions */}
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
             <Link
-              href={`/mock-exams?mode=school&school=${school.id}`}
+              href={`/papers`}
               className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-black text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:opacity-90 transition-opacity shadow-md shadow-indigo-200"
             >
               <Rocket size={18} />
-              {s.hasBlueprint ? 'Start school-specific mock' : 'Try a general 11+ mock'}
+              Sit a themed mock
             </Link>
             <Link
-              href="/papers"
+              href="/mock-exams"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-black text-slate-700 bg-white border border-slate-200 hover:border-slate-300 transition-colors"
             >
               <FileText size={16} />
-              Browse past papers
+              General mock exam
             </Link>
           </div>
 
