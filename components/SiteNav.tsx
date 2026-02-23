@@ -307,6 +307,33 @@ export const SiteNav: React.FC<SiteNavProps> = ({
                 </span>
               </Link>
 
+              {/* Mobile Past Papers */}
+              <Link
+                href="/papers"
+                onClick={() => setMobileOpen(false)}
+                className="w-full flex items-center px-3 py-2.5 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+              >
+                Past Papers
+              </Link>
+
+              {/* Mobile Schools */}
+              <Link
+                href="/schools"
+                onClick={() => setMobileOpen(false)}
+                className="w-full flex items-center px-3 py-2.5 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+              >
+                Schools
+              </Link>
+
+              {/* Mobile Exam Dates */}
+              <Link
+                href="/exam-dates"
+                onClick={() => setMobileOpen(false)}
+                className="w-full flex items-center px-3 py-2.5 rounded-xl text-sm font-bold text-slate-700 hover:bg-slate-50 transition-colors"
+              >
+                Exam Dates
+              </Link>
+
               {/* Mobile Blog */}
               <Link
                 href="/blog"
