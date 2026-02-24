@@ -297,7 +297,7 @@ export default function SchoolProfilePage({ params }: { params: { id: string } }
           {/* Actions */}
           <div className="mt-8 flex flex-col sm:flex-row gap-3">
             <Link
-              href={`/papers`}
+              href={`/papers?highlight=${school.id}`}
               className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-black text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:opacity-90 transition-opacity shadow-md shadow-indigo-200"
             >
               <Rocket size={18} />
