@@ -3,7 +3,7 @@ import { SUBJECTS, UK_CITIES } from '@/lib/siteData';
 import catalog from '@/data/schools.catalog.json';
 import { BLOG_POSTS } from '@/lib/blogPosts';
 
-const BASE = 'https://11plusexampapers.co.uk';
+const BASE = 'https://www.11plusexampapers.com';
 
 function url(
   path: string,
