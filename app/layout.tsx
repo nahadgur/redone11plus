@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
+import { orgSchema, websiteSchema } from '@/lib/schemas'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,6 +19,12 @@ export const metadata: Metadata = {
   },
 }
 
+// Sitewide JSON-LD: Organization + WebSite — injected into raw HTML on every page
+const siteSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [orgSchema, websiteSchema],
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -25,6 +32,12 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema) }}
+        />
+      </head>
       <body className={inter.className}>{children}</body>
     </html>
   )
