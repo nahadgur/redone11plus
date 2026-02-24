@@ -25,7 +25,7 @@ export default function TermsPage() {
           <h2 className="text-xl font-black text-slate-800 mt-8">Changes</h2>
           <p>We may update these terms at any time. Continued use of the site constitutes acceptance.</p>
           <h2 className="text-xl font-black text-slate-800 mt-8">Contact</h2>
-          <p>Questions: <a href="mailto:hello@11plusexampapers.co.uk" className="text-indigo-600 hover:underline">hello@11plusexampapers.co.uk</a></p>
+          <p>Questions: <a href="mailto:hello@11plusexampapers.com" className="text-indigo-600 hover:underline">hello@11plusexampapers.com</a></p>
         </div>
       </main>
       <SiteFooter />
