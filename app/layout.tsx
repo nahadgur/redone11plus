@@ -6,7 +6,7 @@ import { orgSchema, websiteSchema } from '@/lib/schemas'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://11plusexampapers.co.uk'),
+  metadataBase: new URL('https://www.11plusexampapers.com'),
   title: {
     default: '11 Plus Exam Papers',
     template: '%s | 11 Plus Exam Papers',
@@ -33,6 +33,17 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* Google Analytics */}
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-828TTSWVN8" />
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-828TTSWVN8');`,
+          }}
+        />
+        {/* Schema.org */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(siteSchema) }}
