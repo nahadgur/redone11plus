@@ -1,8 +1,8 @@
 'use client';
 
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import {
   Search, GraduationCap, Building2, ChevronRight, Rocket,
   BookOpen, MapPin, Clock, ClipboardList,
@@ -382,9 +382,18 @@ const SUBJECT_LABELS: Record<string, string> = {
 
 // ─── School Card ──────────────────────────────────────────────────────────────
 
-function SchoolCard({ school }: { school: SchoolEntry }) {
+function SchoolCard({ school, highlighted }: { school: SchoolEntry; highlighted: boolean }) {
   const router = useRouter();
   const isGrammar = school.category === 'grammar';
+  const cardRef = useRef<HTMLDivElement>(null);
+  const [isPulsing, setIsPulsing] = useState(false);
+
+  useEffect(() => {
+    if (!highlighted) return;
+    const t1 = setTimeout(() => setIsPulsing(true), 300);
+    const t2 = setTimeout(() => setIsPulsing(false), 2800);
+    return () => { clearTimeout(t1); clearTimeout(t2); };
+  }, [highlighted]);
 
   const handleStartMock = (subjectId: string) => {
     const params = new URLSearchParams({
@@ -402,9 +411,12 @@ function SchoolCard({ school }: { school: SchoolEntry }) {
   const locationLabel = `${school.location.area} · ${school.gender === 'boys' ? 'Boys' : school.gender === 'girls' ? 'Girls' : 'Mixed'}`;
 
   return (
-    <div className={`bg-white rounded-2xl border overflow-hidden transition-all hover:shadow-md ${
-      isGrammar ? 'border-slate-200 hover:border-indigo-200' : 'border-slate-200 hover:border-emerald-200'
-    }`}>
+    <div
+      ref={cardRef}
+      className={`bg-white rounded-2xl border overflow-hidden transition-all duration-500 hover:shadow-md ${
+        isGrammar ? 'border-slate-200 hover:border-indigo-200' : 'border-slate-200 hover:border-emerald-200'
+      } ${isPulsing ? 'ring-4 ring-indigo-400 ring-offset-2 shadow-xl shadow-indigo-200 scale-[1.01]' : 'ring-0'}`}
+    >
       {/* Card header */}
       <div className={`p-4 border-b ${isGrammar ? 'bg-indigo-50 border-indigo-100' : 'bg-emerald-50 border-emerald-100'}`}>
         <div className="flex items-start justify-between gap-2">
@@ -475,9 +487,24 @@ function SchoolCard({ school }: { school: SchoolEntry }) {
 
 // ─── Main Page ────────────────────────────────────────────────────────────────
 
-export default function PapersPage() {
+function PapersPageInner() {
+  const searchParams = useSearchParams();
+  const highlightId = searchParams.get('highlight') || '';
+
   const [search, setSearch] = useState('');
   const [filter, setFilter] = useState<'all' | 'grammar' | 'private'>('all');
+
+  // Refs map: schoolId -> div element, used for scroll-to on highlight
+  const cardRefs = useRef<Record<string, HTMLDivElement | null>>({});
+
+  // When highlight param is present, scroll to that card after mount
+  useEffect(() => {
+    if (!highlightId) return;
+    const el = cardRefs.current[highlightId];
+    if (el) {
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  }, [highlightId]);
 
   const filtered = useMemo(() => {
     return SCHOOLS.filter((s) => {
@@ -581,7 +608,9 @@ export default function PapersPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {grammarSchools.map((school) => (
-                <SchoolCard key={school.id} school={school} />
+                <div key={school.id} ref={(el) => { cardRefs.current[school.id] = el; }}>
+                  <SchoolCard school={school} highlighted={school.id === highlightId} />
+                </div>
               ))}
             </div>
           </section>
@@ -599,7 +628,9 @@ export default function PapersPage() {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {privateSchools.map((school) => (
-                <SchoolCard key={school.id} school={school} />
+                <div key={school.id} ref={(el) => { cardRefs.current[school.id] = el; }}>
+                  <SchoolCard school={school} highlighted={school.id === highlightId} />
+                </div>
               ))}
             </div>
           </section>
@@ -627,5 +658,14 @@ export default function PapersPage() {
 
       <SiteFooter />
     </>
+  );
+}
+
+import { Suspense } from 'react';
+export default function PapersPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-white" />}>
+      <PapersPageInner />
+    </Suspense>
   );
 }
