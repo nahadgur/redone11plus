@@ -30,7 +30,7 @@ export const EXTERNAL_LINKS: ExternalLink[] = [
   },
   {
     title: 'Appeal a school place — GOV.UK',
-    url: 'https://www.gov.uk/appeal-school-place',
+    url: 'https://educationhub.blog.gov.uk/2023/03/secondary-school-offer-appeals-everything-you-need-to-know/',
     domain: 'gov.uk',
     description: 'Step-by-step guide to appealing a school place decision, including grammar school appeals.',
     tags: ['Admissions', 'Results'],
@@ -62,14 +62,14 @@ export const EXTERNAL_LINKS: ExternalLink[] = [
   // ── Exam boards ────────────────────────────────────────────────────────────
   {
     title: 'GL Assessment — 11+ test information for parents',
-    url: 'https://www.gl-assessment.co.uk/support/11-plus-faqs/',
+    url: 'https://11plus.gl-assessment.co.uk/',
     domain: 'gl-assessment.co.uk',
     description: 'Official FAQs from GL Assessment explaining their 11+ test format, question types, and scoring.',
     tags: ['Exam Format', 'Guide', 'Preparation'],
   },
   {
     title: 'CEM Centre — about the 11+ tests',
-    url: 'https://www.cem.org/11-plus',
+    url: 'https://www.cem.org/parents',
     domain: 'cem.org',
     description: "CEM's own explanation of their 11+ assessment approach and how it differs from GL Assessment.",
     tags: ['Exam Format', 'Guide', 'Preparation'],
@@ -85,7 +85,7 @@ export const EXTERNAL_LINKS: ExternalLink[] = [
   // ── NHS / wellbeing ────────────────────────────────────────────────────────
   {
     title: 'Helping children with exam anxiety — NHS',
-    url: 'https://www.nhs.uk/mental-health/children-and-young-adults/advice-for-parents/exam-stress/',
+    url: 'https://www.nhs.uk/mental-health/children-and-young-adults/advice-for-parents/help-your-child-beat-exam-stress/',
     domain: 'nhs.uk',
     description: 'NHS advice for parents on recognising and managing exam stress and anxiety in children.',
     tags: ['Wellbeing', 'Exam Day', 'Preparation'],
@@ -115,14 +115,14 @@ export const EXTERNAL_LINKS: ExternalLink[] = [
   },
   {
     title: 'BBC Bitesize — KS2 Maths',
-    url: 'https://www.bbc.co.uk/bitesize/subjects/z826n39',
+    url: 'https://www.bbc.co.uk/bitesize/primary',
     domain: 'bbc.co.uk',
     description: 'Free BBC revision resources covering the full KS2 Maths curriculum, including interactive exercises.',
     tags: ['Maths', 'Preparation'],
   },
   {
     title: 'BBC Bitesize — KS2 English',
-    url: 'https://www.bbc.co.uk/bitesize/subjects/zv48q6f',
+    url: 'https://www.bbc.co.uk/bitesize/subjects/english',
     domain: 'bbc.co.uk',
     description: 'Free BBC resources for KS2 English including grammar, punctuation, spelling, and comprehension.',
     tags: ['English', 'Preparation'],
@@ -138,14 +138,14 @@ export const EXTERNAL_LINKS: ExternalLink[] = [
   // ── Verbal & non-verbal reasoning ──────────────────────────────────────────
   {
     title: 'What is verbal reasoning? — Bond 11+',
-    url: 'https://www.bond11plus.co.uk/parents/what-is-verbal-reasoning/',
+    url: 'https://www.bond11plus.co.uk/verbal-reasoning',
     domain: 'bond11plus.co.uk',
     description: "Bond\'s parent guide to verbal reasoning in the 11+, including question types and practice advice.",
     tags: ['Verbal Reasoning', 'Exam Format', 'Guide'],
   },
   {
     title: 'What is non-verbal reasoning? — Bond 11+',
-    url: 'https://www.bond11plus.co.uk/parents/what-is-non-verbal-reasoning/',
+    url: 'https://www.bond11plus.co.uk/non-verbal-reasoning',
     domain: 'bond11plus.co.uk',
     description: "Bond\'s parent guide to non-verbal reasoning, covering spatial patterns, matrices, and sequences.",
     tags: ['Exam Format', 'Guide', 'Preparation'],
@@ -170,14 +170,14 @@ export const EXTERNAL_LINKS: ExternalLink[] = [
   // ── Regional & local authority ─────────────────────────────────────────────
   {
     title: 'Kent Test — Kent County Council',
-    url: 'https://www.kent.gov.uk/education-and-children/schools/secondary-schools/kent-test',
+    url: 'https://www.kent.gov.uk/education-and-children/schools/school-places/kent-test',
     domain: 'kent.gov.uk',
     description: 'Official Kent County Council page on the Kent Test, including registration dates and what the test involves.',
     tags: ['Regional', 'Exam Format', 'Admissions'],
   },
   {
     title: 'Buckinghamshire 11+ — Secondary Transfer Test',
-    url: 'https://www.buckinghamshire.gov.uk/schools-and-learning/secondary-schools-and-transfer/secondary-transfer-test/',
+    url: 'https://www.buckinghamshire.gov.uk/schools-and-learning/schools-index/school-admissions/grammar-schools-and-transfer-testing-11/',
     domain: 'buckinghamshire.gov.uk',
     description: 'Official Buckinghamshire Council page on the Secondary Transfer Test for grammar school entry.',
     tags: ['Regional', 'Admissions', 'Exam Format'],
@@ -200,7 +200,7 @@ export const EXTERNAL_LINKS: ExternalLink[] = [
   },
   {
     title: 'Which? guide to 11+ preparation',
-    url: 'https://www.which.co.uk/reviews/private-schools/article/11-plus-exam-a-parents-guide',
+    url: 'https://www.elevenplusexams.co.uk/advice-preparation/advice/what-is-the-eleven-plus',
     domain: 'which.co.uk',
     description: "Which?\'s impartial guide to 11+ preparation, covering resources, tutoring, and what to expect.",
     tags: ['Preparation', 'Guide', 'Exam Format'],
@@ -216,7 +216,7 @@ export const EXTERNAL_LINKS: ExternalLink[] = [
   },
   {
     title: 'Sutton Trust — research on selective schools and social mobility',
-    url: 'https://www.suttontrust.com/our-research/grammar-schools/',
+    url: 'https://www.suttontrust.com/our-research/gaps-in-grammar-schools-social-mobility/',
     domain: 'suttontrust.com',
     description: 'Research from the Sutton Trust on grammar schools, selective education, and social mobility outcomes.',
     tags: ['Background', 'Grammar Schools', 'Outcomes'],
@@ -237,14 +237,14 @@ export const EXTERNAL_LINKS: ExternalLink[] = [
   },
   {
     title: 'Mumsnet — 11+ discussion boards',
-    url: 'https://www.mumsnet.com/Talk/secondary/11plus',
+    url: 'https://www.mumsnet.com/discover/11-exam',
     domain: 'mumsnet.com',
     description: 'The largest parent community discussing 11+ preparation, school choices, and results across all regions.',
     tags: ['Preparation', 'Admissions', 'Wellbeing', 'Results'],
   },
   {
     title: 'Exam Papers Plus — free 11+ sample papers',
-    url: 'https://www.exampapers.co.uk',
+    url: 'https://exampapersplus.co.uk/11-plus-guide-parents/',
     domain: 'exampapers.co.uk',
     description: 'A widely used resource for free and paid 11+ practice papers across all subjects and exam formats.',
     tags: ['Preparation', 'Exam Format', 'Maths', 'English'],
