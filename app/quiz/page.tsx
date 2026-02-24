@@ -24,10 +24,12 @@ type Screen = 'quiz' | 'results' | 'review';
 
 function mapSubject(s: string | null): Subject {
   if (!s) return Subject.Maths;
-  const lower = s.toLowerCase();
+  const lower = s.toLowerCase().replace(/_/g, '-');
   if (lower === 'english') return Subject.English;
-  if (lower === 'verbal')  return Subject.VerbalReasoning;
-  if (lower === 'nonverbal' || lower === 'non-verbal') return Subject.NonVerbalReasoning;
+  // Accept both short form ('verbal') and long URL slug ('verbal-reasoning')
+  if (lower === 'verbal' || lower === 'verbal-reasoning') return Subject.VerbalReasoning;
+  // Accept both short form ('nonverbal') and long URL slug ('non-verbal-reasoning')
+  if (lower === 'nonverbal' || lower === 'non-verbal' || lower === 'non-verbal-reasoning') return Subject.NonVerbalReasoning;
   return Subject.Maths;
 }
 
