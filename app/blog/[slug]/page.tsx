@@ -5,6 +5,8 @@ import { SiteNav } from '@/components/SiteNav';
 import { SiteFooter } from '@/components/SiteFooter';
 import { ArrowLeft, BookOpen, Clock, Calendar, ArrowRight, Lightbulb, AlertTriangle, Info, ExternalLink } from 'lucide-react';
 import { BLOG_POSTS, getPostBySlug, getAllSlugs, type BlockType } from '@/lib/blogPosts';
+import { SchemaOrg } from '@/components/SchemaOrg';
+import { articleSchema } from '@/lib/schemas';
 import { getExternalLinks } from '@/lib/externalLinks';
 
 interface Props { params: { slug: string } }
@@ -189,6 +191,12 @@ export default function BlogPostPage({ params }: Props) {
 
   return (
     <>
+      <SchemaOrg data={articleSchema({
+        slug: params.slug,
+        title: post!.title,
+        description: post!.desc,
+        datePublished: post!.date ?? '2024-01-01',
+      })} />
       <SiteNav />
       <main className="min-h-screen bg-white">
 
