@@ -13,7 +13,7 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
     ],
-    sitemap: 'https://11plusexampapers.co.uk/sitemap.xml',
-    host: 'https://11plusexampapers.co.uk',
+    sitemap: 'https://www.11plusexampapers.com/sitemap.xml',
+    host: 'https://www.11plusexampapers.com',
   };
 }
