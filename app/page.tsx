@@ -3,8 +3,6 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { LandingPage } from '../components/LandingPage';
-import { SchemaOrg } from '@/components/SchemaOrg';
-import { homepageSchemas } from '@/lib/schemas';
 
 /**
  * Homepage — shows the LandingPage.
@@ -31,10 +29,5 @@ export default function Home() {
     }
   }, [router]);
 
-  return (
-    <>
-      <SchemaOrg data={homepageSchemas} />
-      <LandingPage />
-    </>
-  );
+  return <LandingPage />;
 }
