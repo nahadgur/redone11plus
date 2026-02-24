@@ -116,4 +116,227 @@ export default function SchoolPageClient({ params }: { params: { id: string } })
   };
 
   return (
-    <>
+    <>      <SiteNav />
+      <main className="bg-white min-h-screen">
+
+        {/* Hero */}
+        <section className={`bg-gradient-to-br from-${accentColor}-50 via-white to-${accentColor}-50 pt-20 pb-12 px-4 border-b border-slate-100`}>
+          <div className="max-w-4xl mx-auto">
+            <Link
+              href="/schools"
+              className="inline-flex items-center gap-1 text-xs font-bold text-slate-400 hover:text-slate-600 mb-5 transition-colors"
+            >
+              ← All Schools
+            </Link>
+
+            <div className="flex items-start gap-4">
+              <div className={`w-14 h-14 rounded-2xl bg-${accentColor}-100 flex items-center justify-center shrink-0`}>
+                {isGrammar
+                  ? <GraduationCap size={28} className={`text-${accentColor}-600`} />
+                  : <Building2 size={28} className={`text-${accentColor}-600`} />
+                }
+              </div>
+              <div>
+                <div className={`inline-flex items-center gap-1 px-2.5 py-1 text-[11px] font-bold rounded-full bg-${accentColor}-100 text-${accentColor}-700 border border-${accentColor}-200 mb-2`}>
+                  {isGrammar ? 'Grammar School' : 'Independent School'}
+                </div>
+                <h1 className="text-3xl sm:text-4xl font-black text-slate-900 tracking-tight leading-tight">{school.name}</h1>
+                {s.location && (
+                  <div className="flex items-center gap-1.5 mt-2 text-slate-500 text-sm">
+                    <MapPin size={14} />
+                    <span>{s.location.area || s.location.city}</span>
+                    {s.gender && (
+                      <span className="ml-2 px-2 py-0.5 text-[11px] font-bold bg-slate-100 text-slate-500 rounded-full">
+                        {s.gender === 'boys' ? 'Boys' : s.gender === 'girls' ? 'Girls' : 'Mixed'}
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {detail?.admissionsUrl && (
+              <a
+                href={detail.admissionsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-5 inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 rounded-xl text-sm font-bold text-slate-700 hover:border-slate-300 hover:shadow-sm transition-all"
+              >
+                <ExternalLink size={14} className="text-slate-400" />
+                Official Admissions Page
+              </a>
+            )}
+          </div>
+        </section>
+
+        <section className="max-w-4xl mx-auto px-4 py-10">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+            {/* Exam format */}
+            <div className="rounded-2xl border border-slate-200 p-5">
+              <div className="flex items-center gap-2 mb-4">
+                <BookOpen size={16} className="text-indigo-500" />
+                <h2 className="font-black text-slate-900">Exam Format</h2>
+              </div>
+              <div className="space-y-3 text-sm">
+                <div>
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Provider</span>
+                  <p className="text-slate-700 font-semibold mt-0.5">{s.examFormat || 'See admissions page'}</p>
+                </div>
+                {detail?.entryStages && (
+                  <div>
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Entry stages</span>
+                    <p className="text-slate-700 mt-0.5 leading-relaxed">{detail.entryStages}</p>
+                  </div>
+                )}
+                {detail?.examNotes && (
+                  <div>
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">What's tested</span>
+                    <p className="text-slate-600 mt-0.5 leading-relaxed text-[13px]">{detail.examNotes}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Subjects */}
+            <div className="rounded-2xl border border-slate-200 p-5">
+              <div className="flex items-center gap-2 mb-4">
+                <CheckCircle size={16} className="text-emerald-500" />
+                <h2 className="font-black text-slate-900">Subjects Tested</h2>
+              </div>
+              {s.subjects && s.subjects.length > 0 ? (
+                <div className="space-y-2">
+                  {s.subjects.map((sub: string) => (
+                    <div key={sub} className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-indigo-400 shrink-0" />
+                      <span className="text-sm text-slate-700 font-medium">{subjectLabels[sub] || sub}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-sm text-slate-400 italic">Check official admissions page for subjects</p>
+              )}
+
+              {s.entryPoints && (
+                <div className="mt-4 pt-4 border-t border-slate-100">
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Entry points</span>
+                  <div className="flex flex-wrap gap-1.5 mt-1.5">
+                    {s.entryPoints.map((e: string) => (
+                      <span key={e} className="px-2.5 py-1 text-xs font-bold bg-indigo-50 text-indigo-700 rounded-full border border-indigo-100">{e}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+
+            {/* Key dates */}
+            <div className="rounded-2xl border border-slate-200 p-5">
+              <div className="flex items-center gap-2 mb-4">
+                <Calendar size={16} className="text-amber-500" />
+                <h2 className="font-black text-slate-900">Key Dates (Typical)</h2>
+              </div>
+              <div className="space-y-3 text-sm">
+                {detail?.registrationWindow && (
+                  <div>
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Registration</span>
+                    <p className="text-slate-700 mt-0.5">{detail.registrationWindow}</p>
+                  </div>
+                )}
+                {detail?.resultsTimeline && (
+                  <div>
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Results & offers</span>
+                    <p className="text-slate-700 mt-0.5">{detail.resultsTimeline}</p>
+                  </div>
+                )}
+                {!detail?.registrationWindow && (
+                  <p className="text-sm text-slate-400 italic">See the official admissions page for confirmed dates each year.</p>
+                )}
+                <Link
+                  href="/exam-dates"
+                  className="inline-flex items-center gap-1 text-xs font-bold text-indigo-600 hover:text-indigo-800 transition-colors mt-1"
+                >
+                  View full exam dates calendar <ChevronRight size={12} />
+                </Link>
+              </div>
+            </div>
+
+            {/* Admissions info */}
+            <div className="rounded-2xl border border-slate-200 p-5">
+              <div className="flex items-center gap-2 mb-4">
+                <Users size={16} className="text-violet-500" />
+                <h2 className="font-black text-slate-900">Admissions Info</h2>
+              </div>
+              <div className="space-y-3 text-sm">
+                {detail?.placesAvailable && (
+                  <div>
+                    <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Places available</span>
+                    <p className="text-slate-700 font-semibold mt-0.5">{detail.placesAvailable}</p>
+                  </div>
+                )}
+                <div>
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Catchment area</span>
+                  <p className="text-slate-700 mt-0.5">
+                    {detail?.catchmentArea === false
+                      ? 'No catchment area — open to all applicants nationally'
+                      : detail?.catchmentArea === true
+                      ? "Yes — check the school's admissions policy"
+                      : typeof detail?.catchmentArea === 'string'
+                      ? detail.catchmentArea
+                      : 'Check official admissions page'}
+                  </p>
+                </div>
+                <div>
+                  <span className="text-xs font-bold text-slate-400 uppercase tracking-wide">Selective</span>
+                  <p className="text-slate-700 mt-0.5">{s.selective ? 'Yes — entrance exam required' : 'Partially selective — check admissions'}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div className="mt-8 flex flex-col sm:flex-row gap-3">
+            <Link
+              href={`/papers?highlight=${school.id}`}
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-black text-white bg-gradient-to-r from-indigo-600 to-violet-600 hover:opacity-90 transition-opacity shadow-md shadow-indigo-200"
+            >
+              <Rocket size={18} />
+              Sit a themed mock
+            </Link>
+            <Link
+              href="/mock-exams"
+              className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-2xl font-black text-slate-700 bg-white border border-slate-200 hover:border-slate-300 transition-colors"
+            >
+              <FileText size={16} />
+              General mock exam
+            </Link>
+          </div>
+
+          {!SCHOOL_DETAILS[school.id] && (
+            <div className="mt-8 p-5 bg-slate-50 border border-slate-200 rounded-2xl text-sm text-slate-500 leading-relaxed">
+              Detailed profile information for {school.name} is coming soon.
+              In the meantime, visit the school's official admissions page for the most accurate and up-to-date entry requirements.
+            </div>
+          )}
+        </section>
+
+        {/* Related schools */}
+        <section className="max-w-4xl mx-auto px-4 pb-16">
+          <h2 className="text-lg font-black text-slate-900 mb-4">Related schools</h2>
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            {SCHOOLS.filter((rs) => rs.id !== school.id && rs.category === school.category).slice(0, 4).map((rs) => (
+              <Link key={rs.id} href={`/schools/${rs.id}`}
+                className="p-3 rounded-xl border border-slate-200 hover:border-indigo-200 hover:bg-indigo-50 transition-all group text-center">
+                <div className="text-sm font-bold text-slate-700 group-hover:text-indigo-700 transition-colors leading-snug">
+                  {(rs as any).shortName || rs.name}
+                </div>
+                <div className="text-xs text-slate-400 mt-1">{(rs as any).location?.city}</div>
+              </Link>
+            ))}
+          </div>
+        </section>
+
+      </main>
+      <SiteFooter />
+    </>
+  );
+}
