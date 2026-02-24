@@ -18,6 +18,14 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const post = getPostBySlug(params.slug);
   if (!post) return {};
+
+  const schema = articleSchema({
+    slug: params.slug,
+    title: post.title,
+    description: post.desc,
+    datePublished: post.date ?? '2024-01-01',
+  });
+
   return {
     title: post.title,
     description: post.desc,
@@ -27,6 +35,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       description: post.desc,
       images: [{ url: post.imageUrl, alt: post.imageAlt }],
       type: 'article',
+    },
+    other: {
+      'schema-org': JSON.stringify({ '@context': 'https://schema.org', '@graph': schema }),
     },
   };
 }
@@ -191,12 +202,7 @@ export default function BlogPostPage({ params }: Props) {
 
   return (
     <>
-      <SchemaOrg data={articleSchema({
-        slug: params.slug,
-        title: post!.title,
-        description: post!.desc,
-        datePublished: post!.date ?? '2024-01-01',
-      })} />
+
       <SiteNav />
       <main className="min-h-screen bg-white">
 
