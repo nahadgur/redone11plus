@@ -18,54 +18,359 @@ interface SchoolEntry {
   shortName: string;
   category: 'grammar' | 'private';
   examFormat: string;
-  location: string;
+  location: { city: string; area: string };
   gender: 'boys' | 'girls' | 'mixed';
-  subjects: string[];         // subject IDs available for this school's mock
+  subjects: string[];
   officialAdmissionsUrl?: string;
   note?: string;
 }
 
-// ─── School data ─────────────────────────────────────────────────────────────
+// ─── School data (sourced from schools.catalog.json + admissions URLs) ────────
+// Location format: { city, area } — same as catalog so compare page never crashes.
+// Subject IDs use 'verbal' / 'nonverbal' (short form) so quiz routing works correctly.
 
 const SCHOOLS: SchoolEntry[] = [
-  // ── GRAMMAR SCHOOLS ──────────────────────────────────────────────────────
-  { id: 'qe-boys', name: "Queen Elizabeth's School (Barnet)", shortName: 'QE Barnet', category: 'grammar', examFormat: 'GL Assessment (2-stage)', location: 'Barnet, North London', gender: 'boys', subjects: ['maths', 'english', 'verbal', 'nonverbal'], officialAdmissionsUrl: 'https://www.qebarnet.co.uk/admissions-information/admissions/' },
-  { id: 'henrietta-barnett', name: 'The Henrietta Barnett School', shortName: 'HBS', category: 'grammar', examFormat: 'GL Assessment (2-stage)', location: 'Hampstead Garden Suburb, North London', gender: 'girls', subjects: ['maths', 'english', 'verbal', 'nonverbal'], officialAdmissionsUrl: 'https://www.hbschool.org.uk/admissions/' },
-  { id: 'wilsons', name: "Wilson's School", shortName: "Wilson's", category: 'grammar', examFormat: 'Sutton SET (2-stage)', location: 'Wallington, Sutton', gender: 'boys', subjects: ['maths', 'english', 'verbal', 'nonverbal'], officialAdmissionsUrl: 'https://www.wilsons.school/admissions/' },
-  { id: 'tiffin-girls', name: "Tiffin Girls' School", shortName: 'Tiffin Girls', category: 'grammar', examFormat: 'School own papers (2-stage)', location: 'Kingston upon Thames', gender: 'girls', subjects: ['maths', 'english'], officialAdmissionsUrl: 'https://www.tiffingirls.org/admissions/year-7/', note: 'Tiffin Girls sets its own papers. Stage 2 is not released publicly.' },
-  { id: 'tiffin', name: 'Tiffin School', shortName: 'Tiffin', category: 'grammar', examFormat: 'School own papers (2-stage)', location: 'Kingston upon Thames', gender: 'boys', subjects: ['maths', 'english'], officialAdmissionsUrl: 'https://www.tiffinschool.co.uk/admissions/year-7-admissions/' },
-  { id: 'st-olaves', name: "St Olave's Grammar School", shortName: "St Olave's", category: 'grammar', examFormat: "St Olave's SET (2-stage)", location: 'Orpington, Bromley', gender: 'boys', subjects: ['maths', 'english', 'verbal', 'nonverbal'], officialAdmissionsUrl: 'https://www.saintolaves.net/admissions' },
-  { id: 'latymer', name: 'The Latymer School', shortName: 'Latymer', category: 'grammar', examFormat: 'GL Assessment', location: 'Edmonton, North London', gender: 'mixed', subjects: ['maths', 'english', 'verbal', 'nonverbal'], officialAdmissionsUrl: 'https://www.latymer.co.uk/admissions/' },
-  { id: 'nonsuch', name: 'Nonsuch High School for Girls', shortName: 'Nonsuch', category: 'grammar', examFormat: 'Sutton SET (2-stage)', location: 'Cheam, Sutton', gender: 'girls', subjects: ['maths', 'english', 'verbal', 'nonverbal'], officialAdmissionsUrl: 'https://www.nonsuchschool.org/admissions/' },
-  { id: 'wallington-girls', name: 'Wallington High School for Girls', shortName: 'Wallington Girls', category: 'grammar', examFormat: 'Sutton SET (2-stage)', location: 'Wallington, Sutton', gender: 'girls', subjects: ['maths', 'english', 'verbal', 'nonverbal'], officialAdmissionsUrl: 'https://www.wallingtongirls.org.uk/admissions/' },
-  { id: 'sutton-grammar', name: 'Sutton Grammar School', shortName: 'Sutton Grammar', category: 'grammar', examFormat: 'Sutton SET (2-stage)', location: 'Sutton, Surrey', gender: 'boys', subjects: ['maths', 'english', 'verbal', 'nonverbal'], officialAdmissionsUrl: 'https://www.suttongrammar.sutton.sch.uk/admissions/' },
-  { id: 'colchester-rgs', name: 'Colchester Royal Grammar School', shortName: 'CRGS', category: 'grammar', examFormat: 'CSSE (Essex)', location: 'Colchester, Essex', gender: 'boys', subjects: ['maths', 'english'], officialAdmissionsUrl: 'https://www.crgs.co.uk/admissions/', note: 'CRGS uses CSSE (Consortium of Selective Schools in Essex) papers.' },
-  { id: 'altrincham-girls', name: 'Altrincham Grammar School for Girls', shortName: 'AGGS', category: 'grammar', examFormat: 'CEM (Trafford)', location: 'Altrincham, Greater Manchester', gender: 'girls', subjects: ['maths', 'english', 'verbal', 'nonverbal'], officialAdmissionsUrl: 'https://www.aggs.trafford.sch.uk/admissions/' },
-  { id: 'pates-grammar', name: "Pate's Grammar School", shortName: "Pate's", category: 'grammar', examFormat: 'GL Assessment', location: 'Cheltenham, Gloucestershire', gender: 'mixed', subjects: ['maths', 'english', 'verbal', 'nonverbal'], officialAdmissionsUrl: 'https://www.pates.gloucs.sch.uk/admissions/' },
-  { id: 'king-edward-vi-girls', name: 'King Edward VI High School for Girls', shortName: 'KEHS Birmingham', category: 'grammar', examFormat: 'KEHS own papers', location: 'Birmingham', gender: 'girls', subjects: ['maths', 'english', 'verbal'], officialAdmissionsUrl: 'https://www.kehsbirmingham.org/admissions/' },
-  { id: 'reading-school', name: 'Reading School', shortName: 'Reading School', category: 'grammar', examFormat: 'GL Assessment', location: 'Reading, Berkshire', gender: 'boys', subjects: ['maths', 'english', 'verbal', 'nonverbal'], officialAdmissionsUrl: 'https://www.reading-school.co.uk/admissions/' },
-  { id: 'newstead-wood', name: 'Newstead Wood School', shortName: 'Newstead Wood', category: 'grammar', examFormat: 'GL Assessment (2-stage)', location: 'Orpington, Bromley', gender: 'girls', subjects: ['maths', 'english', 'verbal', 'nonverbal'], officialAdmissionsUrl: 'https://www.newsteadwood.co.uk/admissions/' },
-  // ── PRIVATE SCHOOLS ──────────────────────────────────────────────────────
-  { id: 'spgs-girls', name: "St Paul's Girls' School", shortName: 'SPGS', category: 'private', examFormat: 'SPGS own papers (Maths, English + interview)', location: 'Brook Green, West London', gender: 'girls', subjects: ['maths', 'english'], officialAdmissionsUrl: 'https://www.spgs.org/admissions/' },
-  { id: 'guildford-high', name: 'Guildford High School', shortName: 'Guildford High', category: 'private', examFormat: 'Own papers (3 subjects + General)', location: 'Guildford, Surrey', gender: 'girls', subjects: ['maths', 'english', 'verbal'], officialAdmissionsUrl: 'https://www.guildfordhigh.co.uk/admissions/' },
-  { id: 'st-pauls', name: "St Paul's School", shortName: "St Paul's", category: 'private', examFormat: 'ISEB Pre-Test + own papers + interview', location: 'Barnes, West London', gender: 'boys', subjects: ['maths', 'english', 'verbal', 'nonverbal'], officialAdmissionsUrl: 'https://www.stpaulsschool.org.uk/admissions/' },
-  { id: 'nlcs-girls', name: 'North London Collegiate School', shortName: 'NLCS', category: 'private', examFormat: 'NLCS own papers (Maths, English + interview)', location: 'Edgware, North London', gender: 'girls', subjects: ['maths', 'english'], officialAdmissionsUrl: 'https://www.nlcs.org.uk/admissions/' },
-  { id: 'kcs-wimbledon', name: "King's College School (Wimbledon)", shortName: 'KCS Wimbledon', category: 'private', examFormat: 'KCS own papers (Maths, English, Reasoning + interview)', location: 'Wimbledon, South London', gender: 'boys', subjects: ['maths', 'english', 'verbal', 'nonverbal'], officialAdmissionsUrl: 'https://www.kcs.org.uk/admissions/' },
-  { id: 'colsg-girls', name: 'City of London School for Girls', shortName: 'CLSG', category: 'private', examFormat: 'ISEB Pre-Test or own papers', location: 'Barbican, City of London', gender: 'girls', subjects: ['maths', 'english', 'verbal', 'nonverbal'], officialAdmissionsUrl: 'https://www.clsg.org.uk/admissions/' },
-  { id: 'mcs-oxford', name: 'Magdalen College School (Oxford)', shortName: 'MCS Oxford', category: 'private', examFormat: 'MCS own papers (Maths, English + interview)', location: 'Oxford', gender: 'boys', subjects: ['maths', 'english'], officialAdmissionsUrl: 'https://www.mcsoxford.org/admissions/' },
-  { id: 'cls-boys', name: 'City of London School', shortName: 'CLS', category: 'private', examFormat: 'CLS own papers (Maths, English)', location: 'Blackfriars, City of London', gender: 'boys', subjects: ['maths', 'english'], officialAdmissionsUrl: 'https://www.clsb.org.uk/admissions/' },
-  { id: 'habs-boys', name: "Haberdashers' Boys' School", shortName: 'Habs Boys', category: 'private', examFormat: 'Own papers (Maths, English, Reasoning)', location: 'Borehamwood, Hertfordshire', gender: 'boys', subjects: ['maths', 'english', 'verbal'], officialAdmissionsUrl: 'https://www.habsboys.org.uk/admissions/' },
-  { id: 'habs-girls', name: "Haberdashers' Girls' School", shortName: 'Habs Girls', category: 'private', examFormat: 'Own papers (Maths, English, Reasoning)', location: 'Borehamwood, Hertfordshire', gender: 'girls', subjects: ['maths', 'english', 'verbal'], officialAdmissionsUrl: 'https://www.habsgirls.org.uk/admissions/' },
-  { id: 'wycombe-abbey', name: 'Wycombe Abbey', shortName: 'Wycombe Abbey', category: 'private', examFormat: 'Own papers (Maths, English + interview)', location: 'High Wycombe, Buckinghamshire', gender: 'girls', subjects: ['maths', 'english'], officialAdmissionsUrl: 'https://www.wycombeabbey.com/admissions/' },
-  { id: 'godolphin-latymer', name: 'Godolphin and Latymer School', shortName: 'Godolphin', category: 'private', examFormat: 'Own papers (Maths, English + interview)', location: 'Hammersmith, West London', gender: 'girls', subjects: ['maths', 'english'], officialAdmissionsUrl: 'https://www.godolphinandlatymer.com/admissions/' },
-  { id: 'highgate', name: 'Highgate School', shortName: 'Highgate', category: 'private', examFormat: 'ISEB Pre-Test + own papers + interview', location: 'Highgate, North London', gender: 'mixed', subjects: ['maths', 'english', 'verbal', 'nonverbal'], officialAdmissionsUrl: 'https://www.highgateschool.org.uk/admissions/' },
-  { id: 'latymer-upper', name: 'Latymer Upper School', shortName: 'Latymer Upper', category: 'private', examFormat: 'Own papers (Maths, English + interview)', location: 'Hammersmith, West London', gender: 'mixed', subjects: ['maths', 'english'], officialAdmissionsUrl: 'https://www.latymer-upper.org/admissions/' },
-  { id: 'jags', name: "James Allen's Girls' School", shortName: 'JAGS', category: 'private', examFormat: 'Own papers (Maths, English + interview)', location: 'Dulwich, South London', gender: 'girls', subjects: ['maths', 'english'], officialAdmissionsUrl: 'https://www.jags.org.uk/admissions/' },
-  { id: 'wimbledon-high', name: 'Wimbledon High School', shortName: 'Wimbledon High', category: 'private', examFormat: 'GDST own papers (Maths, English, Reasoning)', location: 'Wimbledon, South London', gender: 'girls', subjects: ['maths', 'english', 'verbal'], officialAdmissionsUrl: 'https://www.wimbledonhigh.gdst.net/admissions/' },
-  { id: 'dulwich-college', name: 'Dulwich College', shortName: 'Dulwich College', category: 'private', examFormat: 'Own papers (Maths, English, Reasoning)', location: 'Dulwich, South London', gender: 'boys', subjects: ['maths', 'english', 'verbal'], officialAdmissionsUrl: 'https://www.dulwich.org.uk/admissions/' },
-  { id: 'alleyn', name: "Alleyn's School", shortName: "Alleyn's", category: 'private', examFormat: 'Own papers (Maths, English, Reasoning)', location: 'Dulwich, South London', gender: 'mixed', subjects: ['maths', 'english', 'verbal'], officialAdmissionsUrl: 'https://www.alleyns.org.uk/admissions/' },
-  { id: 'south-hampstead', name: 'South Hampstead High School', shortName: 'South Hampstead', category: 'private', examFormat: 'GDST own papers (Maths, English, Reasoning)', location: 'Hampstead, North London', gender: 'girls', subjects: ['maths', 'english', 'verbal'], officialAdmissionsUrl: 'https://www.shhs.gdst.net/admissions/' },
-  { id: 'manchester-grammar', name: 'Manchester Grammar School', shortName: 'MGS', category: 'private', examFormat: 'Own papers (Maths, English, Reasoning + interview)', location: 'Rusholme, Manchester', gender: 'boys', subjects: ['maths', 'english', 'verbal'], officialAdmissionsUrl: 'https://www.mgs.org/admissions/' },
+  // ── GRAMMAR SCHOOLS ───────────────────────────────────────────────────────
+  {
+    id: 'qe-boys', name: "Queen Elizabeth's School (Barnet)", shortName: 'QE Barnet',
+    category: 'grammar', examFormat: 'GL Assessment (two-stage)',
+    location: { city: 'London', area: 'Barnet, North London' }, gender: 'boys',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.qebarnet.co.uk/admissions-information/admissions/',
+  },
+  {
+    id: 'henrietta-barnett', name: 'The Henrietta Barnett School', shortName: 'HBS',
+    category: 'grammar', examFormat: 'GL Assessment (two-stage)',
+    location: { city: 'London', area: 'Hampstead Garden Suburb, North London' }, gender: 'girls',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.hbschool.org.uk/admissions/',
+  },
+  {
+    id: 'wilsons', name: "Wilson's School", shortName: "Wilson's",
+    category: 'grammar', examFormat: 'Sutton SET (two-stage)',
+    location: { city: 'London', area: 'Wallington, Sutton' }, gender: 'boys',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.wilsons.school/admissions/',
+  },
+  {
+    id: 'tiffin-girls', name: "Tiffin Girls' School", shortName: 'Tiffin Girls',
+    category: 'grammar', examFormat: 'GL Assessment (two-stage)',
+    location: { city: 'London', area: 'Kingston upon Thames' }, gender: 'girls',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.tiffingirls.org/admissions/year-7/',
+    note: 'Tiffin Girls sets its own papers. Stage 2 is not released publicly.',
+  },
+  {
+    id: 'tiffin', name: 'Tiffin School', shortName: 'Tiffin',
+    category: 'grammar', examFormat: 'GL Assessment (two-stage)',
+    location: { city: 'London', area: 'Kingston upon Thames' }, gender: 'boys',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.tiffinschool.co.uk/admissions/year-7-admissions/',
+  },
+  {
+    id: 'st-olaves', name: "St Olave's Grammar School", shortName: "St Olave's",
+    category: 'grammar', examFormat: "St Olave's SET (two-stage)",
+    location: { city: 'London', area: 'Orpington, Bromley' }, gender: 'boys',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.saintolaves.net/admissions',
+  },
+  {
+    id: 'latymer', name: 'The Latymer School', shortName: 'Latymer',
+    category: 'grammar', examFormat: 'GL Assessment',
+    location: { city: 'London', area: 'Edmonton, North London' }, gender: 'mixed',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.latymer.co.uk/admissions/',
+  },
+  {
+    id: 'nonsuch', name: 'Nonsuch High School for Girls', shortName: 'Nonsuch',
+    category: 'grammar', examFormat: 'Sutton SET (two-stage)',
+    location: { city: 'London', area: 'Cheam, Sutton' }, gender: 'girls',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.nonsuchschool.org/admissions/',
+  },
+  {
+    id: 'wallington-girls', name: 'Wallington High School for Girls', shortName: 'Wallington Girls',
+    category: 'grammar', examFormat: 'Sutton SET (two-stage)',
+    location: { city: 'London', area: 'Wallington, Sutton' }, gender: 'girls',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.wallingtongirls.org.uk/admissions/',
+  },
+  {
+    id: 'sutton-grammar', name: 'Sutton Grammar School', shortName: 'Sutton Grammar',
+    category: 'grammar', examFormat: 'Sutton SET (two-stage)',
+    location: { city: 'London', area: 'Sutton' }, gender: 'boys',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.suttongrammar.sutton.sch.uk/admissions/',
+  },
+  {
+    id: 'colchester-rgs', name: 'Colchester Royal Grammar School', shortName: 'CRGS',
+    category: 'grammar', examFormat: 'CSSE (Essex)',
+    location: { city: 'Colchester', area: 'Essex' }, gender: 'boys',
+    subjects: ['maths', 'english'],
+    officialAdmissionsUrl: 'https://www.crgs.co.uk/admissions/',
+    note: 'CRGS uses CSSE (Consortium of Selective Schools in Essex) papers.',
+  },
+  {
+    id: 'altrincham-girls', name: 'Altrincham Grammar School for Girls', shortName: 'AGSF',
+    category: 'grammar', examFormat: 'CEM (Trafford)',
+    location: { city: 'Manchester', area: 'Altrincham, Greater Manchester' }, gender: 'girls',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.aggs.trafford.sch.uk/admissions/',
+  },
+  {
+    id: 'pates-grammar', name: "Pate's Grammar School", shortName: "Pate's",
+    category: 'grammar', examFormat: 'GL Assessment',
+    location: { city: 'Cheltenham', area: 'Gloucestershire' }, gender: 'mixed',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.pates.gloucs.sch.uk/admissions/',
+  },
+  {
+    id: 'king-edward-vi-girls', name: 'King Edward VI High School for Girls (Birmingham)', shortName: 'KEHS',
+    category: 'grammar', examFormat: 'KEHS own papers (Maths, English, Reasoning)',
+    location: { city: 'Birmingham', area: 'Edgbaston, Birmingham' }, gender: 'girls',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.kehsbirmingham.org/admissions/',
+  },
+  {
+    id: 'reading-school', name: 'Reading School', shortName: 'Reading School',
+    category: 'grammar', examFormat: 'GL Assessment',
+    location: { city: 'Reading', area: 'Berkshire' }, gender: 'boys',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.reading-school.co.uk/admissions/',
+  },
+  {
+    id: 'newstead-wood', name: 'Newstead Wood School', shortName: 'Newstead Wood',
+    category: 'grammar', examFormat: 'GL Assessment (two-stage)',
+    location: { city: 'London', area: 'Orpington, Bromley' }, gender: 'girls',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.newsteadwood.co.uk/admissions/',
+  },
+
+  // ── INDEPENDENT SCHOOLS ───────────────────────────────────────────────────
+  {
+    id: 'spgs-girls', name: "St Paul's Girls' School", shortName: 'SPGS',
+    category: 'private', examFormat: 'SPGS own papers (Maths, English + interview)',
+    location: { city: 'London', area: 'Hammersmith, West London' }, gender: 'girls',
+    subjects: ['maths', 'english'],
+    officialAdmissionsUrl: 'https://www.spgs.org/admissions/',
+  },
+  {
+    id: 'guildford-high', name: 'Guildford High School', shortName: 'GHS',
+    category: 'private', examFormat: 'Own papers (3 subjects + General paper + interview)',
+    location: { city: 'Guildford', area: 'Surrey' }, gender: 'girls',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.guildfordhigh.co.uk/admissions/',
+  },
+  {
+    id: 'st-pauls', name: "St Paul's School", shortName: 'SPS',
+    category: 'private', examFormat: 'Own papers (Maths, English, Reasoning + interview)',
+    location: { city: 'London', area: 'Barnes, West London' }, gender: 'boys',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.stpaulsschool.org.uk/admissions/',
+  },
+  {
+    id: 'nlcs-girls', name: 'North London Collegiate School', shortName: 'NLCS',
+    category: 'private', examFormat: 'NLCS own papers (Maths, English + interview)',
+    location: { city: 'London', area: 'Edgware, North London' }, gender: 'girls',
+    subjects: ['maths', 'english'],
+    officialAdmissionsUrl: 'https://www.nlcs.org.uk/admissions/',
+  },
+  {
+    id: 'kcs-wimbledon', name: "King's College School (Wimbledon)", shortName: 'KCS',
+    category: 'private', examFormat: 'KCS own papers (Maths, English, Reasoning + interview)',
+    location: { city: 'London', area: 'Wimbledon, South West London' }, gender: 'boys',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.kcs.org.uk/admissions/',
+  },
+  {
+    id: 'colsg-girls', name: 'City of London School for Girls', shortName: 'CLSG',
+    category: 'private', examFormat: 'ISEB Pre-Test or own papers',
+    location: { city: 'London', area: 'Barbican, City of London' }, gender: 'girls',
+    subjects: ['maths', 'english'],
+    officialAdmissionsUrl: 'https://www.clsg.org.uk/admissions/',
+  },
+  {
+    id: 'westminster', name: 'Westminster School', shortName: 'Westminster',
+    category: 'private', examFormat: 'ISEB Pre-Test + own papers + interview',
+    location: { city: 'London', area: 'Westminster, Central London' }, gender: 'mixed',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.westminster.org.uk/admissions/11-entry/',
+  },
+  {
+    id: 'mcs-oxford', name: 'Magdalen College School (Oxford)', shortName: 'MCS Oxford',
+    category: 'private', examFormat: 'MCS own papers (Maths, English + interview)',
+    location: { city: 'Oxford', area: 'Oxfordshire' }, gender: 'boys',
+    subjects: ['maths', 'english'],
+    officialAdmissionsUrl: 'https://www.mcsoxford.org/admissions/',
+  },
+  {
+    id: 'cls-boys', name: 'City of London School', shortName: 'CLS',
+    category: 'private', examFormat: 'CLS own papers (Maths, English)',
+    location: { city: 'London', area: 'City of London' }, gender: 'boys',
+    subjects: ['maths', 'english'],
+    officialAdmissionsUrl: 'https://www.clsb.org.uk/admissions/',
+  },
+  {
+    id: 'habs-boys', name: "Haberdashers' Boys' School", shortName: 'Habs Boys',
+    category: 'private', examFormat: 'Own papers (Maths, English, Reasoning)',
+    location: { city: 'London', area: 'Borehamwood, Hertfordshire' }, gender: 'boys',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.habsboys.org.uk/admissions/',
+  },
+  {
+    id: 'habs-girls', name: "Haberdashers' Girls' School", shortName: 'Habs Girls',
+    category: 'private', examFormat: 'Own papers (Maths, English, Reasoning)',
+    location: { city: 'London', area: 'Borehamwood, Hertfordshire' }, gender: 'girls',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.habsgirls.org.uk/admissions/',
+  },
+  {
+    id: 'wycombe-abbey', name: 'Wycombe Abbey', shortName: 'Wycombe Abbey',
+    category: 'private', examFormat: 'Own papers (Maths, English + interview)',
+    location: { city: 'High Wycombe', area: 'Buckinghamshire' }, gender: 'girls',
+    subjects: ['maths', 'english'],
+    officialAdmissionsUrl: 'https://www.wycombeabbey.com/admissions/',
+  },
+  {
+    id: 'tonbridge', name: 'Tonbridge School', shortName: 'Tonbridge',
+    category: 'private', examFormat: 'ISEB Pre-Test + own papers + interview',
+    location: { city: 'Tonbridge', area: 'Kent' }, gender: 'boys',
+    subjects: ['maths', 'english'],
+    officialAdmissionsUrl: 'https://www.tonbridge-school.co.uk/admissions/',
+  },
+  {
+    id: 'godolphin-latymer', name: 'Godolphin and Latymer School', shortName: 'G&L',
+    category: 'private', examFormat: 'Own papers (Maths, English + interview)',
+    location: { city: 'London', area: 'Hammersmith, West London' }, gender: 'girls',
+    subjects: ['maths', 'english'],
+    officialAdmissionsUrl: 'https://www.godolphinandlatymer.com/admissions/',
+  },
+  {
+    id: 'highgate', name: 'Highgate School', shortName: 'Highgate',
+    category: 'private', examFormat: 'ISEB Pre-Test + own papers + interview',
+    location: { city: 'London', area: 'Highgate, North London' }, gender: 'mixed',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.highgateschool.org.uk/admissions/',
+  },
+  {
+    id: 'latymer-upper', name: 'Latymer Upper School', shortName: 'Latymer Upper',
+    category: 'private', examFormat: 'Own papers (Maths, English + interview)',
+    location: { city: 'London', area: 'Hammersmith, West London' }, gender: 'mixed',
+    subjects: ['maths', 'english'],
+    officialAdmissionsUrl: 'https://www.latymer-upper.org/admissions/',
+  },
+  {
+    id: 'jags', name: "James Allen's Girls' School", shortName: 'JAGS',
+    category: 'private', examFormat: 'Own papers (Maths, English + interview)',
+    location: { city: 'London', area: 'Dulwich, South London' }, gender: 'girls',
+    subjects: ['maths', 'english'],
+    officialAdmissionsUrl: 'https://www.jags.org.uk/admissions/',
+  },
+  {
+    id: 'sevenoaks', name: 'Sevenoaks School', shortName: 'Sevenoaks',
+    category: 'private', examFormat: 'Own papers + interview',
+    location: { city: 'Sevenoaks', area: 'Kent' }, gender: 'mixed',
+    subjects: ['maths', 'english'],
+    officialAdmissionsUrl: 'https://www.sevenoaksschool.org/admissions/',
+  },
+  {
+    id: 'wimbledon-high', name: 'Wimbledon High School', shortName: 'WHS',
+    category: 'private', examFormat: 'GDST own papers (Maths, English, Reasoning)',
+    location: { city: 'London', area: 'Wimbledon, South West London' }, gender: 'girls',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.wimbledonhigh.gdst.net/admissions/',
+  },
+  {
+    id: 'oxford-high', name: 'Oxford High School (GDST)', shortName: 'Oxford High',
+    category: 'private', examFormat: 'GDST own papers (Maths, English, Reasoning)',
+    location: { city: 'Oxford', area: 'Oxfordshire' }, gender: 'girls',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.oxfordhigh.gdst.net/admissions/',
+  },
+  {
+    id: 'dulwich-college', name: 'Dulwich College', shortName: 'Dulwich',
+    category: 'private', examFormat: 'Own papers (Maths, English, Reasoning)',
+    location: { city: 'London', area: 'Dulwich, South London' }, gender: 'boys',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.dulwich.org.uk/admissions/',
+  },
+  {
+    id: 'alleyn', name: "Alleyn's School", shortName: "Alleyn's",
+    category: 'private', examFormat: 'Own papers (Maths, English, Reasoning)',
+    location: { city: 'London', area: 'Dulwich, South London' }, gender: 'mixed',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.alleyns.org.uk/admissions/',
+  },
+  {
+    id: 'south-hampstead', name: 'South Hampstead High School', shortName: 'SHHS',
+    category: 'private', examFormat: 'GDST own papers (Maths, English, Reasoning)',
+    location: { city: 'London', area: 'South Hampstead, North London' }, gender: 'girls',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.shhs.gdst.net/admissions/',
+  },
+  {
+    id: 'notting-hill-ealing', name: 'Notting Hill and Ealing High School', shortName: 'NHEHS',
+    category: 'private', examFormat: 'GDST own papers (Maths, English, Reasoning)',
+    location: { city: 'London', area: 'Ealing, West London' }, gender: 'girls',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.nhehs.gdst.net/admissions/',
+  },
+  {
+    id: 'whitgift', name: 'Whitgift School', shortName: 'Whitgift',
+    category: 'private', examFormat: 'Own papers (Maths, English, Reasoning)',
+    location: { city: 'London', area: 'Croydon, South London' }, gender: 'boys',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.whitgift.co.uk/admissions/',
+  },
+  {
+    id: 'emmanuel-tiffin', name: 'Emanuel School', shortName: 'Emanuel',
+    category: 'private', examFormat: 'Own papers (Maths, English, Reasoning)',
+    location: { city: 'London', area: 'Battersea, South West London' }, gender: 'mixed',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.emanuel.org.uk/admissions/',
+  },
+  {
+    id: 'brighton-college', name: 'Brighton College', shortName: 'Brighton College',
+    category: 'private', examFormat: 'Own papers + interview',
+    location: { city: 'Brighton', area: 'East Sussex' }, gender: 'mixed',
+    subjects: ['maths', 'english'],
+    officialAdmissionsUrl: 'https://www.brightoncollege.org.uk/admissions/',
+  },
+  {
+    id: 'withington-girls', name: "Withington Girls' School", shortName: 'WGS',
+    category: 'private', examFormat: 'Own papers (Maths, English, Reasoning)',
+    location: { city: 'Manchester', area: 'West Didsbury, Manchester' }, gender: 'girls',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.withington.manchester.sch.uk/admissions/',
+  },
+  {
+    id: 'manchester-grammar', name: 'Manchester Grammar School', shortName: 'MGS',
+    category: 'private', examFormat: 'Own papers (Maths, English, Reasoning + interview)',
+    location: { city: 'Manchester', area: 'Greater Manchester' }, gender: 'boys',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://www.mgs.org/admissions/',
+  },
+  {
+    id: 'hch-year7-8', name: 'Hampton Court House (Year 7/8)', shortName: 'HCH',
+    category: 'private', examFormat: 'Own assessment + interview',
+    location: { city: 'London', area: 'East Molesey, Surrey' }, gender: 'mixed',
+    subjects: ['maths', 'english'],
+    officialAdmissionsUrl: 'https://www.hamptoncourthouse.co.uk/admissions/',
+  },
+  {
+    id: 'surbiton-high', name: 'Surbiton High School', shortName: 'Surbiton High',
+    category: 'private', examFormat: 'Own papers (Maths, English + interview)',
+    location: { city: 'London', area: 'Surbiton, Kingston upon Thames' }, gender: 'girls',
+    subjects: ['maths', 'english'],
+    officialAdmissionsUrl: 'https://www.surbitonhigh.com/admissions/',
+  },
+  {
+    id: 'lady-eleanor-holles', name: 'Lady Eleanor Holles School', shortName: 'LEH',
+    category: 'private', examFormat: 'ISEB Pre-Test + own problem-solving paper + interview',
+    location: { city: 'London', area: 'Hampton, Richmond upon Thames' }, gender: 'girls',
+    subjects: ['maths', 'english', 'verbal', 'nonverbal'],
+    officialAdmissionsUrl: 'https://lehs.org.uk/admissions/',
+  },
 ];
 
 const SUBJECT_LABELS: Record<string, string> = {
@@ -94,6 +399,8 @@ function SchoolCard({ school }: { school: SchoolEntry }) {
     router.push(`/quiz?${params.toString()}`);
   };
 
+  const locationLabel = `${school.location.area} · ${school.gender === 'boys' ? 'Boys' : school.gender === 'girls' ? 'Girls' : 'Mixed'}`;
+
   return (
     <div className={`bg-white rounded-2xl border overflow-hidden transition-all hover:shadow-md ${
       isGrammar ? 'border-slate-200 hover:border-indigo-200' : 'border-slate-200 hover:border-emerald-200'
@@ -105,7 +412,7 @@ function SchoolCard({ school }: { school: SchoolEntry }) {
             <h3 className="font-black text-slate-900 text-sm leading-snug">{school.name}</h3>
             <div className="flex items-center gap-1 mt-1 text-xs text-slate-500">
               <MapPin size={10} className="shrink-0" />
-              {school.location} · {school.gender === 'boys' ? 'Boys' : school.gender === 'girls' ? 'Girls' : 'Mixed'}
+              {locationLabel}
             </div>
           </div>
           {school.officialAdmissionsUrl && (
@@ -175,10 +482,11 @@ export default function PapersPage() {
   const filtered = useMemo(() => {
     return SCHOOLS.filter((s) => {
       const q = search.toLowerCase();
+      const locationStr = `${s.location.area} ${s.location.city}`.toLowerCase();
       const matchesSearch =
         s.name.toLowerCase().includes(q) ||
         s.shortName.toLowerCase().includes(q) ||
-        s.location.toLowerCase().includes(q);
+        locationStr.includes(q);
       const matchesFilter = filter === 'all' || s.category === filter;
       return matchesSearch && matchesFilter;
     });
