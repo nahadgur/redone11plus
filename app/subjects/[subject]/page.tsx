@@ -2,7 +2,6 @@ import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import SubjectPageClient from './SubjectPageClient';
 import { SUBJECTS, UK_CITIES } from '@/lib/siteData';
-import { SchemaOrg } from '@/components/SchemaOrg';
 import { subjectPageSchema } from '@/lib/schemas';
 
 interface Props { params: { subject: string } }
@@ -39,6 +38,9 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       'independent school entrance',
       'UK 11+ practice questions',
     ],
+    other: {
+      'schema-org': JSON.stringify({ '@context': 'https://schema.org', '@graph': subjectPageSchema({ slug: subject.slug, label: subject.label, description: subject.desc }) }),
+    },
   };
 }
 
@@ -46,13 +48,6 @@ export default function SubjectPage({ params }: Props) {
   const subject = SUBJECTS.find((s) => s.slug === params.subject);
   if (!subject) notFound();
   return (
-    <>
-      <SchemaOrg data={subjectPageSchema({
-        slug: subject.slug,
-        label: subject.label,
-        description: subject.desc,
-      })} />
-      <SubjectPageClient subject={subject} cities={UK_CITIES} />
-    </>
+<SubjectPageClient subject={subject} cities={UK_CITIES} />
   );
 }
