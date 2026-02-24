@@ -2,7 +2,7 @@
 // Pre-built JSON-LD schema objects for each page type.
 // Import the relevant builder and pass to <SchemaOrg data={...} />.
 
-const BASE = 'https://11plusexampapers.co.uk';
+const BASE = 'https://www.11plusexampapers.com';
 const ORG_NAME = '11 Plus Exam Papers';
 const LOGO = `${BASE}/logo.png`;
 
