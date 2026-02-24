@@ -3,29 +3,29 @@ import { SiteNav } from '@/components/SiteNav';
 import { SiteFooter } from '@/components/SiteFooter';
 
 export const metadata: Metadata = {
-  title: 'Privacy Policy | 11 Plus Exam Papers',
-  description: 'Privacy policy for 11 Plus Exam Papers.',
+  title: 'Terms of Use | 11 Plus Exam Papers',
+  description: 'Terms of use for 11 Plus Exam Papers.',
 };
 
-export default function PrivacyPage() {
+export default function TermsPage() {
   return (
     <>
       <SiteNav />
       <main className="max-w-3xl mx-auto px-4 py-16 min-h-screen">
-        <h1 className="text-4xl font-black text-slate-900 mb-8">Privacy Policy</h1>
+        <h1 className="text-4xl font-black text-slate-900 mb-8">Terms of Use</h1>
         <div className="prose prose-slate max-w-none text-slate-600 leading-relaxed space-y-6">
           <p><strong>Last updated:</strong> {new Date().getFullYear()}</p>
-          <p>11 Plus Exam Papers (&quot;we&quot;, &quot;us&quot;) respects your privacy. This policy explains how we collect and use your data.</p>
-          <h2 className="text-xl font-black text-slate-800 mt-8">What we collect</h2>
-          <p>When you submit an enquiry form, we collect your email address, child&apos;s name, and target school. This information is used solely to respond to your enquiry and send relevant 11+ preparation resources.</p>
-          <h2 className="text-xl font-black text-slate-800 mt-8">How we store it</h2>
-          <p>Form submissions are stored in a secure Google Sheets document accessible only to the site owner. We do not sell or share your data with third parties.</p>
-          <h2 className="text-xl font-black text-slate-800 mt-8">Your rights</h2>
-          <p>You can request deletion of your data at any time by emailing <a href="mailto:hello@11plusexampapers.co.uk" className="text-indigo-600 hover:underline">hello@11plusexampapers.co.uk</a>.</p>
-          <h2 className="text-xl font-black text-slate-800 mt-8">Cookies</h2>
-          <p>We use localStorage to save your quiz progress locally in your browser. No third-party tracking cookies are used.</p>
+          <p>By using 11 Plus Exam Papers, you agree to these terms.</p>
+          <h2 className="text-xl font-black text-slate-800 mt-8">Use of content</h2>
+          <p>All content on this site — including practice questions, explanations and guides — is for personal, non-commercial educational use only. Reproduction or redistribution without written permission is prohibited.</p>
+          <h2 className="text-xl font-black text-slate-800 mt-8">Accuracy</h2>
+          <p>We aim to provide accurate 11+ preparation content. However, exam formats and school requirements change. Always verify details with your target school&apos;s official admissions page.</p>
+          <h2 className="text-xl font-black text-slate-800 mt-8">No liability</h2>
+          <p>We are not responsible for exam outcomes. Results depend on many factors beyond practice materials.</p>
+          <h2 className="text-xl font-black text-slate-800 mt-8">Changes</h2>
+          <p>We may update these terms at any time. Continued use of the site constitutes acceptance.</p>
           <h2 className="text-xl font-black text-slate-800 mt-8">Contact</h2>
-          <p>For any privacy questions: <a href="mailto:hello@11plusexampapers.co.uk" className="text-indigo-600 hover:underline">hello@11plusexampapers.co.uk</a></p>
+          <p>Questions: <a href="mailto:hello@11plusexampapers.com" className="text-indigo-600 hover:underline">hello@11plusexampapers.com</a></p>
         </div>
       </main>
       <SiteFooter />
