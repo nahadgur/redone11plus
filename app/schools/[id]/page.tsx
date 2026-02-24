@@ -10,6 +10,8 @@ import {
 import { SiteNav } from '@/components/SiteNav';
 import { SiteFooter } from '@/components/SiteFooter';
 import { SCHOOLS } from '@/lib/schools';
+import { SchemaOrg } from '@/components/SchemaOrg';
+import { schoolPageSchema } from '@/lib/schemas';
 
 // ─── Static data for known schools ───────────────────────────────────────────
 // Sources: official school admissions pages only. No unofficial claims made.
@@ -117,6 +119,14 @@ export default function SchoolProfilePage({ params }: { params: { id: string } }
 
   return (
     <>
+      <SchemaOrg data={schoolPageSchema({
+        id: school.id,
+        name: school.name,
+        description: detail?.examNotes ?? `${school.name} is a selective school offering 11+ entry. Prepare with themed mock exams on 11 Plus Exam Papers.`,
+        city: (s.location?.city) ?? 'UK',
+        category: school.category,
+        admissionsUrl: detail?.admissionsUrl,
+      })} />
       <SiteNav />
       <main className="bg-white min-h-screen">
 
