@@ -5,11 +5,9 @@ import { BLOG_POSTS } from '@/lib/blogPosts';
 
 const BASE = 'https://11plusexampapers.co.uk';
 
-type Priority = 1.0 | 0.9 | 0.8 | 0.7 | 0.6 | 0.5;
-
 function url(
   path: string,
-  priority: Priority = 0.7,
+  priority: number = 0.7,
   changeFreq: MetadataRoute.Sitemap[0]['changeFrequency'] = 'monthly',
   lastMod?: string,
 ): MetadataRoute.Sitemap[0] {
